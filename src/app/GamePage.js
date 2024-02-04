@@ -11,7 +11,7 @@ let correctCharArray = [];
 let presentCharArray = [];
 let absentCharArray = [];
 async function getAllCharacters() {
-  const data = await fetch(`${endpoint}/word`);
+  const data = await fetch(`/word`);
 
   if (!data.ok) {
     throw new Error("Failed to fetch data");
@@ -39,7 +39,7 @@ export default function GamePage() {
   }, [address]);
 
   const authenticateWithWeb3 = async (web3Address) => {
-    const response = await fetch(`${endpoint}/authenticate`, {
+    const response = await fetch(`/authenticate`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -57,7 +57,7 @@ export default function GamePage() {
   };
   const submitUserWord = async () => {
     const userId = localStorage.getItem("userId");
-    const response = await fetch(`${endpoint}/userword`, {
+    const response = await fetch(`/userword`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
