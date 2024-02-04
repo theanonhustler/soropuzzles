@@ -1,0 +1,68 @@
+.keyboard-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.row {
+  width: auto;
+  display: flex;
+  flex-direction: row;
+  gap: 3px;
+}
+
+.key_btn {
+  border-radius: 5px;
+  font-weight: 800;
+  cursor: pointer;
+  background: #d3d6da;
+  padding: 20px 18px;
+  font-size: 1.25em;
+  border: none;
+  text-transform: uppercase;
+  color: #000;
+  border: 2px solid #121213;
+}
+.key-correct {
+  background: #538d4e;
+  color: #dbdbdb;
+}
+
+.key-present {
+  background: #b59f3b;
+  color: #dbdbdb;
+}
+
+.key-absent {
+  background: #363636;
+  color: #dbdbdb;
+}
+
+@media (min-width: 100px) and (max-width: 720px) {
+  .keyboard-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .row {
+    width: auto;
+    display: flex;
+    flex-direction: row;
+    gap: 2px;
+  }
+  .key_btn {
+    border-radius: 5px;
+    font-weight: 800;
+    cursor: pointer;
+    background: #d3d6da;
+    padding: 8px 6px;
+    font-size: 1.25em;
+    border: none;
+    text-transform: uppercase;
+    color: #000;
+    border: 2px solid #121213;
+  }
+}

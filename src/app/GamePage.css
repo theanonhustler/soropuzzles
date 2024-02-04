@@ -1,0 +1,180 @@
+.gamecontainer{
+    display: flex;
+    background: #100f10;
+    position: relative;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100svh;
+    align-items: center;
+    width: 100vw;
+}
+.message{
+    position: absolute;
+    top:10%;
+    padding: 10px 20px;
+    border-radius: 10px;
+    color: #fff;
+    background: #787c7e;
+    font-size: 16px;
+}
+
+.title{
+    letter-spacing: 0.2rem;
+    font-size: 36px;
+    font-weight: 600;
+    color: #dbdbdb;
+    margin: 16px 0;
+}
+.walletbtn{
+    max-width: 80px !important;
+    min-width: 60px !important;
+    font-size: 14px !important;
+    padding: 10px 14px !important;
+}
+.connectedbtn{
+  @apply bg-gray-200 rounded-md px-2 py-1 text-sm text-black font-medium;
+}
+.points{
+  @apply bg-slate-900 text-green-700 text-sm rounded-md px-2 py-2 font-medium;
+}
+
+.cube-row{
+    display: flex;
+    flex-direction: row;
+    gap:5px;
+}
+
+.cube{
+    display: flex;
+    flex-direction: column;
+    gap:5px;
+}
+.letter{
+    text-transform: uppercase;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    font-weight: 700;
+    width: 50px;
+    height: 50px;
+    border: 2px solid #404045;
+    color: #fff;
+    border-radius: 8px;
+}
+
+.reset-board{
+    padding: 0px 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: none;
+    color: #82ae30;
+    font-size: 38px;
+}
+
+.top{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    
+    
+    border-bottom: 1px solid #949494;
+    @apply px-4 lg:px-8 items-center;
+}
+.bottom{
+  margin-bottom: 20px;
+}
+
+.cube-row.error {
+    -webkit-animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+            animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+    perspective: 1000px;
+  }
+  
+  @keyframes shake {
+    10%, 90% {
+      transform: translate3d(-1px, 0, 0);
+    }
+    20%, 80% {
+      transform: translate3d(2px, 0, 0);
+    }
+    30%, 50%, 70% {
+      transform: translate3d(-4px, 0, 0);
+    }
+    40%, 60% {
+      transform: translate3d(4px, 0, 0);
+    }
+  }
+
+.correct{
+    background: #538d4e;
+    color: #dbdbdb;
+}
+
+.present{
+    background: #b59f3b;
+    color: #dbdbdb;
+}
+
+.absent{
+    background: #363636;
+    color: #dbdbdb;
+}
+
+.clientStatus {
+  position: absolute;
+  right: 0;
+  padding: 10px;
+}
+
+
+.inputcustom {
+  font-size: 28px;
+  background: none;
+  width: 160px;
+  border: 2px solid black;
+  border-radius: 8px;
+  box-shadow: none;
+  margin: 12px auto;
+  position: relative;
+  display: block;
+  text-transform: uppercase;
+}
+
+.thingy {
+  width: 400px;
+}
+@media (min-width: 100px) and (max-width: 720px) {
+  .letter{
+    text-transform: uppercase;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 700;
+    width: 40px;
+    height: 40px;
+    border: 2px solid #404045;
+    color: #fff;
+    border-radius: 8px;
+}
+.message{
+    position: absolute;
+    top:12%;
+    padding: 8px 16px;
+    border-radius: 10px;
+    color: #fff;
+    background: #787c7e;
+    font-size: 12px;
+}
+.title{
+  font-size: 24px;
+}
+}
