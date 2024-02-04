@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { wordList } from "./config";
 // import { toString as uint8ArrayToString } from "uint8arrays/to-string";
 import OnScreenKeyboard from "./OnScreenKeyboard";
-import { endpoint } from "@/utils/endpoint";
+import { endpoint } from "../utils/endpoint";
 import { ConnectWallet, useUser, useAddress } from "@thirdweb-dev/react";
 
 let correctCharArray = [];
