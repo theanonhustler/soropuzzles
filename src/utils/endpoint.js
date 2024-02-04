@@ -1,1 +1,1 @@
-export const endpoint = "https://wordl3.app/api";
+export const endpoint = `${process.env.NEXT_PUBLIC_API_URL}`;
