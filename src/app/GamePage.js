@@ -6,6 +6,8 @@ import { wordList } from "./config";
 import OnScreenKeyboard from "./OnScreenKeyboard";
 import { endpoint } from "../utils/endpoint";
 import { ConnectWallet, useUser, useAddress } from "@thirdweb-dev/react";
+import staricon from "../assets/star-icon.svg";
+import Image from "next/image";
 
 let correctCharArray = [];
 let presentCharArray = [];
@@ -236,15 +238,14 @@ export default function GamePage() {
   return (
     <div className="gamecontainer">
       <div className="top">
-        <div className="points">Points: {points}</div>
+        <div className="points"><Image className="w-4" src={staricon} alt="star icon"/>{points} pts</div>
 
-        <div className="title">Wordl3.app</div>
         {/* <div className="reset-board" onClick={resetBoard}>
           {"\u27f3"}
         </div> */}
         <ConnectWallet
           hideTestnetFaucet={false}
-          btnTitle="Login"
+          btnTitle="LOG IN"
           theme={"dark"}
           className="walletbtn"
           modalSize={"compact"}
@@ -257,8 +258,12 @@ export default function GamePage() {
           }}
         />
       </div>
-      {message && <div className="message">{message}</div>}
-      {hint && <div className="message">{hint}</div>}
+      <div className="flex flex-col items-center">
+        <div className="title">3lax</div>
+        {hint && <div className="subtitle">{hint}</div>}
+      </div>
+      {/* {message && <div className="message">{message}</div>}
+      {hint && <div className="message">{hint}</div>} */}
       <div className="cube">
         {[0, 1, 2, 3, 4, 5].map((row, rowIndex) => (
           <div

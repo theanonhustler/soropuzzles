@@ -14,29 +14,37 @@
 
 .key_btn {
   border-radius: 5px;
-  font-weight: 800;
+  font-weight: 500;
   cursor: pointer;
-  background: #d3d6da;
-  padding: 20px 18px;
+  background: #ffffff;
+  height: 70px;
+  width: 70px;
   font-size: 1.25em;
   border: none;
   text-transform: uppercase;
   color: #000;
-  border: 2px solid #121213;
+  border-radius: 50%;
+}
+
+.key-special {
+  background-color: #fade42;
+  color: #000;
+  width: 100px;
+  border-radius: 50px;
 }
 .key-correct {
-  background: #538d4e;
-  color: #dbdbdb;
+  background: #42d941 !important;
+  color: #ffffff !important;
 }
 
 .key-present {
-  background: #b59f3b;
-  color: #dbdbdb;
+  background: #0098ea !important;
+  color: #ffffff !important;
 }
 
 .key-absent {
-  background: #363636;
-  color: #dbdbdb;
+  background: #ea4200 !important;
+  color: #ffffff !important;
 }
 
 @media (min-width: 100px) and (max-width: 720px) {
@@ -55,14 +63,22 @@
   }
   .key_btn {
     border-radius: 5px;
-    font-weight: 800;
+    font-weight: 500;
     cursor: pointer;
-    background: #d3d6da;
-    padding: 8px 6px;
-    font-size: 1.25em;
+    background: #ffffff;
+    height: 32px;
+    width: 32px;
+    font-size: 1.15em;
     border: none;
     text-transform: uppercase;
     color: #000;
-    border: 2px solid #121213;
+    border-radius: 50%;
+  }
+  .key-special {
+    background-color: #fade42;
+    color: #000;
+    width: 60px;
+    border-radius: 50px;
+    font-size: 0.9em;
   }
 }
