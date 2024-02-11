@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { keys } from "./constants";
 
+
 const OnScreenKeyboard = ({ boardData, handleKeyPress }) => {
   function handleKeyboard(key) {
     if (key.key === "Enter") handleKeyPress("ENTER");

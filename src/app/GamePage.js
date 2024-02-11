@@ -9,6 +9,9 @@ import { ConnectWallet, useUser, useAddress } from "@thirdweb-dev/react";
 import staricon from "../assets/star-icon.svg";
 import laxlogo from "../assets/3lax.svg";
 import Image from "next/image";
+import enter from "../sounds/enter.mp3";
+import back from "../sounds/back.mp3";
+import keysound from "../sounds/key.mp3";
 
 let correctCharArray = [];
 let presentCharArray = [];
@@ -95,7 +98,6 @@ export default function GamePage() {
     );
     let newBoardData = {
       ...boardData,
-      solution: wordList[String.fromCharCode(97 + alphabetIndex)][wordIndex],
       rowIndex: 0,
       boardWords: [],
       boardRowStatus: [],
@@ -146,10 +148,9 @@ export default function GamePage() {
       setSolution(randomCryptoWord?.word);
       setHint(randomCryptoWord?.hint);
       setWordId(randomCryptoWord?.id);
-      if (!boardData || !boardData.solution) {
+      if (!boardData) {
         let newBoardData = {
           ...boardData,
-          solution: randomCryptoWord?.word,
           rowIndex: 0,
           boardWords: [],
           boardRowStatus: [],
@@ -179,47 +180,46 @@ export default function GamePage() {
     }, 2000);
   };
 
-  const enterBoardWord = async (word) => {
-    let score = [];
-        const matchedPositions = [];
+  // const enterBoardWord = async (word) => {
+  //   let score = [];
+  //   const matchedPositions = [];
 
-    for (let i = 0; i < word.length; i++) {
-      const char = word.charAt(i);
-      if (solution.charAt(i) === char) {
-        score.push("correct");
-        correctCharArray.push(char);
-        matchedPositions.push(i);
-      } else if (solution.includes(char)) {
-        const correctPosition = solution.indexOf(char);
-        if (
-          correctPosition !== -1 &&
-          !matchedPositions.includes(correctPosition)
-        ) {
-          score.push("present");
-          presentCharArray.push(char);
-          matchedPositions.push(correctPosition);
-        } else {
-          score.push("absent");
-          absentCharArray.push(char);
-        }
-      } else {
-        score.push("absent");
-        absentCharArray.push(char);
-      }
-    }
+  //   for (let i = 0; i < word.length; i++) {
+  //     const char = word.charAt(i);
+  //     if (solution.charAt(i) === char) {
+  //       score.push("correct");
+  //       correctCharArray.push(char);
+  //       matchedPositions.push(i);
+  //     } else if (solution.includes(char)) {
+  //       const correctPosition = solution.indexOf(char);
+  //       if (
+  //         correctPosition !== -1 &&
+  //         !matchedPositions.includes(correctPosition)
+  //       ) {
+  //         score.push("present");
+  //         presentCharArray.push(char);
+  //         matchedPositions.push(correctPosition);
+  //       } else {
+  //         score.push("absent");
+  //         absentCharArray.push(char);
+  //       }
+  //     } else {
+  //       score.push("absent");
+  //       absentCharArray.push(char);
+  //     }
+  //   }
 
-
-    console.log(score);
-    let sc = {
-      type: "score",
-      word,
-      score,
-      presentCharArray,
-      absentCharArray,
-      correctCharArray,
-    };
-    setScore(sc);
-  };
+  //   console.log(score);
+  //   let sc = {
+  //     type: "score",
+  //     word,
+  //     score,
+  //     presentCharArray,
+  //     absentCharArray,
+  //     correctCharArray,
+  //   };
+  //   setScore(sc);
+  // };
 
   const enterCurrentText = (word) => {
     let boardWords = boardData.boardWords;
@@ -233,9 +233,10 @@ export default function GamePage() {
     setBoardData(newBoardData);
   };
 
-  const handleKeyPress = async(key) => {
+  const handleKeyPress = async (key) => {
     if (boardData.rowIndex > 5 || boardData.status === "WIN") return;
     if (key === "ENTER") {
+      new Audio(enter).play();
       if (charArray.length === 5) {
         let word = charArray.join("").toLowerCase();
         if (!wordList[word.charAt(0)].includes(word)) {
@@ -251,9 +252,12 @@ export default function GamePage() {
       return;
     }
     if (key === "⌫") {
+      new Audio(back).play();
       charArray.splice(charArray.length - 1, 1);
       setCharArray([...charArray]);
     } else if (charArray.length < 5) {
+      new Audio(keysound).play();
+
       charArray.push(key);
       setCharArray([...charArray]);
     }
