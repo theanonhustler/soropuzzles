@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
+import { unstable_noStore as noStore } from "next/cache";
 import { supabase } from "../../../lib/supabase";
 
 export async function GET() {
+  noStore();
   try {
     const { data: existData, error } = await supabase
       .from("words")
