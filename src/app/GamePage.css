@@ -30,18 +30,17 @@
 }
 
 .title {
-font-family: 'Borel', cursive;
-  letter-spacing: 0.2rem;
-  font-size: 72px;
+  width: 250px;
   font-weight: 600;
   color: #0098e9;
 }
 .subtitle {
 font-family: 'Futura', cursive;
-  font-size: 24px;
+  font-size: 18px;
   color: #424242;
   text-align: center;
-  width: 60%;
+  width: 65%;
+  margin-bottom: 18px;
 }
 .walletbtn {
   max-width: 90px !important;
@@ -197,7 +196,7 @@ font-family: 'Futura', cursive;
     font-size: 12px;
   }
   .title {
-    font-size: 60px;
+  width: 200px;
   }
   .correct {
     background: #42d941;
@@ -213,5 +212,8 @@ font-family: 'Futura', cursive;
     background: #ea4200;
     color: #ffffff;
   }
+  .subtitle {
+  font-size: 18px;
+}
   
 }

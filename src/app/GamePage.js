@@ -7,6 +7,7 @@ import OnScreenKeyboard from "./OnScreenKeyboard";
 import { endpoint } from "../utils/endpoint";
 import { ConnectWallet, useUser, useAddress } from "@thirdweb-dev/react";
 import staricon from "../assets/star-icon.svg";
+import laxlogo from "../assets/3lax.svg";
 import Image from "next/image";
 
 let correctCharArray = [];
@@ -238,7 +239,10 @@ export default function GamePage() {
   return (
     <div className="gamecontainer">
       <div className="top">
-        <div className="points"><Image className="w-4" src={staricon} alt="star icon"/>{points} pts</div>
+        <div className="points">
+          <Image className="w-4" src={staricon} alt="star icon" />
+          {points} pts
+        </div>
 
         {/* <div className="reset-board" onClick={resetBoard}>
           {"\u27f3"}
@@ -258,37 +262,41 @@ export default function GamePage() {
           }}
         />
       </div>
-      <div className="flex flex-col items-center">
-        <div className="title">3lax</div>
-        {hint && <div className="subtitle">{hint}</div>}
+      <div className="title">
+        <Image className="w-full" src={laxlogo} alt="logo" />
       </div>
+      <div className="flex flex-col items-center">
+        {hint && <div className="subtitle">Hint: {hint}</div>}
+        <div className="cube">
+          {[0, 1, 2, 3, 4, 5].map((row, rowIndex) => (
+            <div
+              className={`cube-row ${
+                boardData && row === boardData.rowIndex && error && "error"
+              }`}
+              key={rowIndex}
+            >
+              {[0, 1, 2, 3, 4].map((column, letterIndex) => (
+                <div
+                  key={letterIndex}
+                  className={`letter ${
+                    boardData && boardData.boardRowStatus[row]
+                      ? boardData.boardRowStatus[row][column]
+                      : ""
+                  }`}
+                >
+                  {boardData &&
+                    boardData.boardWords[row] &&
+                    boardData.boardWords[row][column]}
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* {message && <div className="message">{message}</div>}
       {hint && <div className="message">{hint}</div>} */}
-      <div className="cube">
-        {[0, 1, 2, 3, 4, 5].map((row, rowIndex) => (
-          <div
-            className={`cube-row ${
-              boardData && row === boardData.rowIndex && error && "error"
-            }`}
-            key={rowIndex}
-          >
-            {[0, 1, 2, 3, 4].map((column, letterIndex) => (
-              <div
-                key={letterIndex}
-                className={`letter ${
-                  boardData && boardData.boardRowStatus[row]
-                    ? boardData.boardRowStatus[row][column]
-                    : ""
-                }`}
-              >
-                {boardData &&
-                  boardData.boardWords[row] &&
-                  boardData.boardWords[row][column]}
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
+
       <div className="bottom">
         <OnScreenKeyboard
           boardData={boardData}
