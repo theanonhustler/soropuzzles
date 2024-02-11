@@ -32,6 +32,7 @@ export default function GamePage() {
   const [score, setScore] = useState({});
   const [points, setPoints] = useState(0);
   const address = useAddress();
+  const [wordId, setWordId] = useState();
 
   useEffect(() => {
     console.log(address);
@@ -71,6 +72,20 @@ export default function GamePage() {
     if (response.ok) {
       const { points } = await response.json();
       setPoints(points);
+    }
+  };
+  const checkUserWord = async (word) => {
+    const response = await fetch(`/api/checkword`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ wordId, word }),
+    });
+
+    if (response.ok) {
+      const score = await response.json();
+      setScore(score);
     }
   };
   const resetBoard = () => {
@@ -129,7 +144,8 @@ export default function GamePage() {
     const getData = async () => {
       const randomCryptoWord = await getAllCharacters();
       setSolution(randomCryptoWord?.word);
-      setHint(randomCryptoWord.hint);
+      setHint(randomCryptoWord?.hint);
+      setWordId(randomCryptoWord?.id);
       if (!boardData || !boardData.solution) {
         let newBoardData = {
           ...boardData,
@@ -165,25 +181,33 @@ export default function GamePage() {
 
   const enterBoardWord = async (word) => {
     let score = [];
-    for (var index = 0; index < word.length; index++) {
-      const char = word.charAt(index);
-      if (solution.charAt(index) === char) {
+        const matchedPositions = [];
+
+    for (let i = 0; i < word.length; i++) {
+      const char = word.charAt(i);
+      if (solution.charAt(i) === char) {
         score.push("correct");
-        if (!correctCharArray.includes(char)) correctCharArray.push(char);
-        if (presentCharArray.indexOf(char) !== -1)
-          presentCharArray.splice(presentCharArray.indexOf(char), 1);
+        correctCharArray.push(char);
+        matchedPositions.push(i);
       } else if (solution.includes(char)) {
-        score.push("present");
+        const correctPosition = solution.indexOf(char);
         if (
-          !correctCharArray.includes(char) &&
-          !presentCharArray.includes(char)
-        )
+          correctPosition !== -1 &&
+          !matchedPositions.includes(correctPosition)
+        ) {
+          score.push("present");
           presentCharArray.push(char);
+          matchedPositions.push(correctPosition);
+        } else {
+          score.push("absent");
+          absentCharArray.push(char);
+        }
       } else {
         score.push("absent");
-        if (!absentCharArray.includes(char)) absentCharArray.push(char);
+        absentCharArray.push(char);
       }
     }
+
 
     console.log(score);
     let sc = {
@@ -209,7 +233,7 @@ export default function GamePage() {
     setBoardData(newBoardData);
   };
 
-  const handleKeyPress = (key) => {
+  const handleKeyPress = async(key) => {
     if (boardData.rowIndex > 5 || boardData.status === "WIN") return;
     if (key === "ENTER") {
       if (charArray.length === 5) {
@@ -219,8 +243,8 @@ export default function GamePage() {
           handleMessage("Not in word list");
           return;
         }
-        enterBoardWord(word);
         setCharArray([]);
+        await checkUserWord(word);
       } else {
         handleMessage("Not enough letters");
       }

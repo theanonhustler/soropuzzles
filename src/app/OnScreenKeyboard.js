@@ -24,7 +24,9 @@ const OnScreenKeyboard = ({ boardData, handleKeyPress }) => {
           {item.map((key, keyIndex) => (
             <button
               key={keyIndex}
-              className={`key_btn ${key === "ENTER" || key === "\u232b" ? "key-special" : ""} ${
+              className={`key_btn ${
+                key === "ENTER" ? "key-enter" : ""
+              } ${key === "ENTER" || key === "\u232b" ? "key-special" : ""} ${
                 boardData && boardData.correctCharArray.includes(key)
                   ? "key-correct"
                   : boardData && boardData.presentCharArray.includes(key)
