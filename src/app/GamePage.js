@@ -349,7 +349,7 @@ export default function GamePage() {
         />
         {refreshTimer !== 0 && (
           <div className="refresh">
-            Refreshing board in {refreshTimer} seconds
+            Next challenge in {refreshTimer} seconds
           </div>
         )}
       </div>
