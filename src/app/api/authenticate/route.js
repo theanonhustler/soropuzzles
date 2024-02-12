@@ -18,6 +18,17 @@ const generateShortUserId = () => {
 
   return userId;
 };
+const generateReferalCode = () => {
+  const characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  let referral = "";
+
+  for (let i = 0; i < 5; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    referral += characters.charAt(randomIndex);
+  }
+
+  return referral;
+};
 export async function POST(req) {
   try {
     const data = await req.json();
@@ -28,15 +39,16 @@ export async function POST(req) {
       .eq("username", data.web3Address)
       .single();
     let userId = null;
+    let referralCode = null;
     let points = 0;
     if (error) {
       console.log("err", error);
       userId = generateShortUserId();
-
+      referralCode = generateReferalCode();
       const { data: newUser, error: newUserError } = await supabase
         .from("table_name")
         .upsert(
-          [{ id: userId, username: data.web3Address }] // User data to upserts
+          [{ id: userId, username: data.web3Address, referralCode }] // User data to upserts
         );
 
       if (newUserError) {

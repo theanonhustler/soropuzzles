@@ -8,8 +8,13 @@ import { endpoint } from "../utils/endpoint";
 import { ConnectWallet, useUser, useAddress } from "@thirdweb-dev/react";
 import staricon from "../assets/star-icon.svg";
 import laxlogo from "../assets/3lax.svg";
+import refericon from "../assets/refer.svg";
+import helpicon from "../assets/help.svg";
 import Image from "next/image";
 import { ToastContainer, toast } from "react-toastify";
+import ReferModal from "./ReferModal";
+import HelpModal from "./HelpModal";
+
 import useSound from "use-sound";
 let correctCharArray = [];
 let presentCharArray = [];
@@ -29,6 +34,8 @@ export default function GamePage() {
   const [refreshTimer, setRefreshTimer] = useState(0);
   const [refresh, setRefresh] = useState(false);
   const [userAddress, setUserAddress] = useState();
+  const [showRefer, setShowRefer] = useState(false);
+  const [showHelp, setShowHelp] = useState(true);
   const [playkey] = useSound("/sounds/key.mp3");
   const [playenter] = useSound("/sounds/enter.mp3");
   const [playback] = useSound("/sounds/back.mp3");
@@ -177,7 +184,7 @@ export default function GamePage() {
       }
     } else {
       if (score.status === "WIN") {
-        toast.success("You won! Login to join the real battle!");
+        toast.success("Woohoo LFG🚀");
       }
       if (rowIndex === 5) {
         toast.error("Better luck next time!");
@@ -246,43 +253,50 @@ export default function GamePage() {
   };
 
   const handleKeyPress = async (key) => {
-    if (boardData.rowIndex > 5) {
-      toast.error("Better luck next time!");
-      setRefresh(true);
-      setRefreshTimer(5);
-    }
-    if (boardData.status === "WIN") return;
-    if (key === "ENTER") {
-      playenter();
-      if (charArray.length === 5) {
-        let word = charArray.join("").toLowerCase();
-        if (!wordList[word.charAt(0)].includes(word)) {
-          handleError();
-          handleMessage("Not in word list");
-          return;
-        }
-        setCharArray([]);
-        await checkUserWord(word);
-      } else {
-        handleMessage("Not enough letters");
+    if (!showRefer) {
+      if (boardData.rowIndex > 5) {
+        toast.error("Better luck next time!");
+        setRefresh(true);
+        setRefreshTimer(5);
       }
-      return;
-    }
-    if (key === "⌫") {
-      playback();
-      charArray.splice(charArray.length - 1, 1);
-      setCharArray([...charArray]);
-    } else if (charArray.length < 5) {
-      playkey();
+      if (boardData.status === "WIN") return;
+      if (key === "ENTER") {
+        playenter();
+        if (charArray.length === 5) {
+          let word = charArray.join("").toLowerCase();
+          if (!wordList[word.charAt(0)].includes(word)) {
+            handleError();
+            handleMessage("Not in word list");
+            return;
+          }
+          setCharArray([]);
+          await checkUserWord(word);
+        } else {
+          handleMessage("Not enough letters");
+        }
+        return;
+      }
+      if (key === "⌫") {
+        playback();
+        charArray.splice(charArray.length - 1, 1);
+        setCharArray([...charArray]);
+      } else if (charArray.length < 5) {
+        playkey();
 
-      charArray.push(key);
-      setCharArray([...charArray]);
+        charArray.push(key);
+        setCharArray([...charArray]);
+      }
+      enterCurrentText(charArray.join("").toUpperCase());
     }
-    enterCurrentText(charArray.join("").toUpperCase());
   };
 
   return (
-    <div className="gamecontainer">
+    <div
+      style={{ filter: showRefer || showHelp ? "blur(10px)" : "none" }}
+      className="gamecontainer"
+    >
+      <ReferModal showRefer={showRefer} setShowRefer={setShowRefer} />
+      <HelpModal showHelp={showHelp} setShowHelp={setShowHelp} />
       <div className="top">
         <div className="points">
           <Image className="w-4" src={staricon} alt="star icon" />
@@ -292,20 +306,38 @@ export default function GamePage() {
         {/* <div className="reset-board" onClick={resetBoard}>
           {"\u27f3"}
         </div> */}
-        <ConnectWallet
-          hideTestnetFaucet={false}
-          btnTitle="LOG IN"
-          theme={"dark"}
-          className="walletbtn"
-          modalSize={"compact"}
-          detailsBtn={() => {
-            return (
-              <button className="connectedbtn">
-                {address?.substring(0, 4)}...{address?.slice(-3)}
-              </button>
-            );
-          }}
-        />
+        <div className="flex gap-1 items-center">
+          <Image
+            onClick={() => {
+              setShowHelp(true);
+            }}
+            className="w-9 h-9"
+            src={helpicon}
+            alt="refer"
+          />
+          <Image
+            onClick={() => {
+              setShowRefer(true);
+            }}
+            className="w-9 h-9"
+            src={refericon}
+            alt="refer"
+          />
+          <ConnectWallet
+            hideTestnetFaucet={false}
+            btnTitle="LOG IN"
+            theme={"dark"}
+            className="walletbtn"
+            modalSize={"compact"}
+            detailsBtn={() => {
+              return (
+                <button className="connectedbtn">
+                  {address?.substring(0, 4)}...{address?.slice(-3)}
+                </button>
+              );
+            }}
+          />
+        </div>
       </div>
       <div className="title">
         <Image className="w-full" src={laxlogo} alt="logo" />

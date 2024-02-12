@@ -1,0 +1,59 @@
+.referc {
+  @apply h-1/2 w-full p-4 text-center flex justify-center flex-col items-center;
+  background-color: #0098e9;
+  border-radius: 12px 12px 0 0;
+  &_title {
+    @apply text-xl font-semibold;
+  }
+  &_subtitle {
+    @apply text-sm font-light mb-2;
+  }
+  &_codec {
+    @apply px-5 py-2 w-fit text-black font-bold;
+    background-color: #fade42;
+  }
+  &_copyc {
+    @apply text-xs mt-2 cursor-pointer flex justify-center;
+  }
+}
+.referredc {
+  @apply bg-black h-1/2 w-full p-4 text-xs text-white text-center flex justify-center flex-col items-center;
+  border-radius: 0 0 12px 12px;
+  &_title {
+    @apply text-xl font-semibold;
+  }
+  &_subtitle {
+    @apply text-sm font-light mb-2;
+  }
+  &_inputc {
+    @apply flex gap-1 mt-2;
+  }
+  &_input {
+    @apply w-12 h-8 flex justify-center items-center outline-none text-lg font-bold text-black text-center;
+    background-color: #fade42;
+    width: 24px !important;
+  }
+  &_enter {
+    @apply bg-white h-8 w-8 font-bold text-black text-xl rounded-full;
+  }
+}
+.close {
+  @apply absolute -top-4 -right-4 font-black text-center w-8 h-8 rounded-md text-2xl text-black cursor-pointer;
+}
+.close_help {
+  @apply absolute -top-6 right-5 font-black text-center w-8 h-8 rounded-md text-2xl text-black cursor-pointer;
+}
+.help {
+  height: 32rem;
+  width: 28rem;
+
+}
+  @media (min-width: 100px) and (max-width: 720px) {
+    .help{
+    height: 26rem;
+    width: 20rem;
+    }
+    .close_help{
+        @apply top-2 right-4;
+    }
+  }
