@@ -32,7 +32,7 @@ export default function GamePage() {
   const [refreshTimer, setRefreshTimer] = useState(0);
   const [refresh, setRefresh] = useState(false);
   const [userAddress, setUserAddress] = useState(
-    localStorage.getItem("userId")
+    
   );
   const [playkey] = useSound("/sounds/key.mp3");
   const [playenter] = useSound("/sounds/enter.mp3");
