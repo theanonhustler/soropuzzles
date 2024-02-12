@@ -9,9 +9,6 @@ import { ConnectWallet, useUser, useAddress } from "@thirdweb-dev/react";
 import staricon from "../assets/star-icon.svg";
 import laxlogo from "../assets/3lax.svg";
 import Image from "next/image";
-// import enter from "/sounds/enter.mp3";
-// import back from "/sounds/back.mp3";
-// import keysound from "/sounds/key.mp3";
 import { ToastContainer, toast } from "react-toastify";
 import useSound from "use-sound";
 let correctCharArray = [];
@@ -31,9 +28,7 @@ export default function GamePage() {
   const [wordId, setWordId] = useState();
   const [refreshTimer, setRefreshTimer] = useState(0);
   const [refresh, setRefresh] = useState(false);
-  const [userAddress, setUserAddress] = useState(
-    
-  );
+  const [userAddress, setUserAddress] = useState();
   const [playkey] = useSound("/sounds/key.mp3");
   const [playenter] = useSound("/sounds/enter.mp3");
   const [playback] = useSound("/sounds/back.mp3");
@@ -113,20 +108,19 @@ export default function GamePage() {
 
     if (response.ok) {
       const score = await response.json();
-      if(score.bonus){
-        toast.success("Magician indeed! 100 points awarded!")
+      if (score.bonus) {
+        toast.success("Magician indeed! 100 points awarded!");
         setPoints(score.points);
         resetBoard();
+      } else {
+        if (score.status === "WIN" && score.loggedIn) {
+          setPoints(score.points);
+        }
+        if (score.status === "WIN" && !score.loggedIn) {
+          setPoints(points + 1);
+        }
+        setScore(score);
       }
-      else{
-      if (score.status === "WIN" && score.loggedIn) {
-        setPoints(score.points);
-      }
-      if (score.status === "WIN" && !score.loggedIn) {
-        setPoints(points + 1);
-      }
-      setScore(score);
-    }
     }
   };
   const resetBoard = () => {
@@ -171,13 +165,27 @@ export default function GamePage() {
       absentCharArray: [...boardData.absentCharArray, ...score.absentCharArray],
       status: score.status,
     });
-    if (score.status === "WIN") {
-      setRefreshTimer(5);
-      setRefresh(true);
+    if (userAddress) {
+      if (score.status === "WIN") {
+        setRefreshTimer(5);
+        setRefresh(true);
+      }
+      if (rowIndex === 5) {
+        toast.error("Better luck next time!");
+        setRefreshTimer(5);
+        setRefresh(true);
+      }
+    } else {
+      if (score.status === "WIN") {
+        toast.success("You won! Login to join the real battle!");
+      }
+      if (rowIndex === 5) {
+        toast.error("Better luck next time!");
+        resetBoard();
+      }
     }
   }, [score]);
 
- 
   const getData = async () => {
     const randomCryptoWord = await getAllCharacters();
     if (randomCryptoWord.completed) {
