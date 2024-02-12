@@ -6,40 +6,10 @@ import Image from "next/image";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import OtpInput from "react-otp-input";
 
-export default function ReferModal({ showRefer, setShowRefer }) {
-  const [data, setData] = useState("No result");
-  const inputsRef = useRef([]);
-  const [inputValues, setInputValues] = useState(Array(5).fill(""));
+export default function ReferModal({ showRefer, setShowRefer, referralCode }) {
  const [referCode, setReferCode] = useState("");
-  const handleInputChange = (index, event) => {
-    const { value } = event.target;
-    const newValue = value.toUpperCase(); // Convert input value to uppercase
-    const newInputValues = [...inputValues];
-    newInputValues[index] = newValue;
-    setInputValues(newInputValues);
-  };
-  const handlePaste = (event) => {
-    const pasteData = event.clipboardData.getData("Text");
-    console.log(pasteData);
-    const newInputValues = pasteData.slice(0, 5).toUpperCase().split("");
-    setInputValues(
-      newInputValues.concat(Array(5 - newInputValues.length).fill(""))
-    );
-    console.log(newInputValues);
-  };
-  const handleKeyPress = (index, event) => {
-    if (event.key === "Backspace" && index > 0 && inputValues[index] === "") {
-      // Handle backspace and focus on the previous input
-      inputsRef.current[index - 1].focus();
-    } else if (
-      event.key !== "Backspace" &&
-      index < inputValues.length - 1 &&
-      inputValues[index] !== ""
-    ) {
-      // Handle other keys (except backspace) and focus on the next input
-      inputsRef.current[index + 1].focus();
-    }
-  };
+
+
     const handleChange = (code) => {
       setReferCode(code.toUpperCase());
     };
@@ -68,13 +38,13 @@ export default function ReferModal({ showRefer, setShowRefer }) {
             }
             className="referc_codec"
           >
-            3LAX42
+            {referralCode}
           </div>{" "}
           <div className="referc_copyc">
             <Image className="h-4 w-4" src={copyicon} alt="copy" />{" "}
             <div
               onClick={() =>
-                navigator.clipboard.writeText("Copy this text to clipboard")
+                navigator.clipboard.writeText(referralCode)
               }
               className="ml-1 opacity-70"
             >

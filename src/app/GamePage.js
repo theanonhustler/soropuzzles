@@ -39,6 +39,7 @@ export default function GamePage() {
   const [playkey] = useSound("/sounds/key.mp3");
   const [playenter] = useSound("/sounds/enter.mp3");
   const [playback] = useSound("/sounds/back.mp3");
+  const [referralCode, setReferralCode] = useState("");
   useEffect(() => {
     console.log(address);
 
@@ -96,10 +97,12 @@ export default function GamePage() {
     });
 
     if (response.ok) {
-      const { jwtToken, userId, points } = await response.json();
+      const { jwtToken, referralCode, points } = await response.json();
       console.log(jwtToken);
+
       localStorage.setItem("jwtToken", jwtToken);
       setPoints(points);
+      setReferralCode(referralCode);
     }
   };
 
@@ -295,7 +298,7 @@ export default function GamePage() {
       style={{ filter: showRefer || showHelp ? "blur(10px)" : "none" }}
       className="gamecontainer"
     >
-      <ReferModal showRefer={showRefer} setShowRefer={setShowRefer} />
+      <ReferModal showRefer={showRefer} setShowRefer={setShowRefer} referralCode ={referralCode} />
       <HelpModal showHelp={showHelp} setShowHelp={setShowHelp} />
       <div className="top">
         <div className="points">

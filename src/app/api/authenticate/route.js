@@ -60,11 +60,12 @@ export async function POST(req) {
       console.log("existData", existData);
       userId = existData.username;
       points = existData.points;
+      referralCode = existData.referralCode;
     }
     console.log(userId, "existData");
     const jwtToken = createJwt(data.web3Address);
     console.log(jwtToken);
-    return NextResponse.json({ userId, jwtToken, points });
+    return NextResponse.json({ userId, jwtToken, points, referralCode });
   } catch (error) {
     console.error("Error processing authentication request:", error.message);
     return NextResponse.error("Internal Server Error", 500);
