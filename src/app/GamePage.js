@@ -9,22 +9,15 @@ import { ConnectWallet, useUser, useAddress } from "@thirdweb-dev/react";
 import staricon from "../assets/star-icon.svg";
 import laxlogo from "../assets/3lax.svg";
 import Image from "next/image";
-import enter from "../sounds/enter.mp3";
-import back from "../sounds/back.mp3";
-import keysound from "../sounds/key.mp3";
-
+// import enter from "/sounds/enter.mp3";
+// import back from "/sounds/back.mp3";
+// import keysound from "/sounds/key.mp3";
+import { ToastContainer, toast } from "react-toastify";
+import useSound from "use-sound";
 let correctCharArray = [];
 let presentCharArray = [];
 let absentCharArray = [];
-async function getAllCharacters() {
-  const data = await fetch(`/api/word`);
 
-  if (!data.ok) {
-    throw new Error("Failed to fetch data");
-  }
-
-  return data.json();
-}
 export default function GamePage() {
   const [boardData, setBoardData] = useState();
   const [message, setMessage] = useState(null);
@@ -36,15 +29,61 @@ export default function GamePage() {
   const [points, setPoints] = useState(0);
   const address = useAddress();
   const [wordId, setWordId] = useState();
-
+  const [refreshTimer, setRefreshTimer] = useState(0);
+  const [refresh, setRefresh] = useState(false);
+  const [userAddress, setUserAddress] = useState(
+    localStorage.getItem("userId")
+  );
+  const [playkey] = useSound("/sounds/key.mp3");
+  const [playenter] = useSound("/sounds/enter.mp3");
+  const [playback] = useSound("/sounds/back.mp3");
   useEffect(() => {
     console.log(address);
 
     if (address) {
+      localStorage.setItem("userId", address);
       authenticateWithWeb3(address);
+      setUserAddress(address);
+      getData();
+      resetBoard();
+    } else {
+      localStorage.removeItem("userId");
+      getData();
+      setUserAddress(null);
     }
   }, [address]);
+  useEffect(() => {
+    if (refresh) {
+      const timer = setTimeout(() => {
+        if (refreshTimer === 0) {
+          resetBoard();
+          getData();
+          // setRefreshTimer(5);
+        } else {
+          setRefreshTimer((prevTimer) => prevTimer - 1);
+        }
+      }, 1000);
 
+      return () => clearTimeout(timer);
+    }
+  }, [refreshTimer]);
+
+  async function getAllCharacters() {
+    const userId = localStorage.getItem("userId");
+
+    const data = await fetch(`/api/word`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username: userId }),
+    });
+    if (!data.ok) {
+      throw new Error("Failed to fetch data");
+    }
+
+    return data.json();
+  }
   const authenticateWithWeb3 = async (web3Address) => {
     const response = await fetch(`/api/authenticate`, {
       method: "POST",
@@ -58,44 +97,32 @@ export default function GamePage() {
       const { jwtToken, userId, points } = await response.json();
       console.log(jwtToken);
       localStorage.setItem("jwtToken", jwtToken);
-      localStorage.setItem("userId", userId);
       setPoints(points);
     }
   };
-  const submitUserWord = async () => {
-    const userId = localStorage.getItem("userId");
-    const response = await fetch(`/api/userword`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ userId }),
-    });
 
-    if (response.ok) {
-      const { points } = await response.json();
-      setPoints(points);
-    }
-  };
   const checkUserWord = async (word) => {
+    const userId = localStorage.getItem("userId");
     const response = await fetch(`/api/checkword`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ wordId, word }),
+      body: JSON.stringify({ wordId, word, userId }),
     });
 
     if (response.ok) {
       const score = await response.json();
+      if (score.status === "WIN" && score.loggedIn) {
+        setPoints(score.points);
+      }
+      if (score.status === "WIN" && !score.loggedIn) {
+        setPoints(points + 1);
+      }
       setScore(score);
     }
   };
   const resetBoard = () => {
-    var alphabetIndex = Math.floor(Math.random() * 26);
-    var wordIndex = Math.floor(
-      Math.random() * wordList[String.fromCharCode(97 + alphabetIndex)].length
-    );
     let newBoardData = {
       ...boardData,
       rowIndex: 0,
@@ -135,19 +162,32 @@ export default function GamePage() {
         ...score.correctCharArray,
       ],
       absentCharArray: [...boardData.absentCharArray, ...score.absentCharArray],
-      status: allCorrect ? "WIN" : boardData.status,
+      status: score.status,
     });
-    if (allCorrect) {
-      submitUserWord();
+    if (score.status === "WIN") {
+      setRefreshTimer(5);
+      setRefresh(true);
     }
   }, [score]);
 
-  useEffect(() => {
-    const getData = async () => {
-      const randomCryptoWord = await getAllCharacters();
-      setSolution(randomCryptoWord?.word);
+ 
+  const getData = async () => {
+    const randomCryptoWord = await getAllCharacters();
+    if (randomCryptoWord.completed) {
+      toast.success(`All words solved, now 3laxxx!`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    } else {
       setHint(randomCryptoWord?.hint);
       setWordId(randomCryptoWord?.id);
+      setRefresh(false);
       if (!boardData) {
         let newBoardData = {
           ...boardData,
@@ -162,10 +202,8 @@ export default function GamePage() {
         setBoardData(newBoardData);
         localStorage.setItem("board-data", JSON.stringify(newBoardData));
       }
-    };
-    getData();
-  }, []);
-
+    }
+  };
   const handleMessage = (message) => {
     setMessage(message);
     setTimeout(() => {
@@ -180,47 +218,6 @@ export default function GamePage() {
     }, 2000);
   };
 
-  // const enterBoardWord = async (word) => {
-  //   let score = [];
-  //   const matchedPositions = [];
-
-  //   for (let i = 0; i < word.length; i++) {
-  //     const char = word.charAt(i);
-  //     if (solution.charAt(i) === char) {
-  //       score.push("correct");
-  //       correctCharArray.push(char);
-  //       matchedPositions.push(i);
-  //     } else if (solution.includes(char)) {
-  //       const correctPosition = solution.indexOf(char);
-  //       if (
-  //         correctPosition !== -1 &&
-  //         !matchedPositions.includes(correctPosition)
-  //       ) {
-  //         score.push("present");
-  //         presentCharArray.push(char);
-  //         matchedPositions.push(correctPosition);
-  //       } else {
-  //         score.push("absent");
-  //         absentCharArray.push(char);
-  //       }
-  //     } else {
-  //       score.push("absent");
-  //       absentCharArray.push(char);
-  //     }
-  //   }
-
-  //   console.log(score);
-  //   let sc = {
-  //     type: "score",
-  //     word,
-  //     score,
-  //     presentCharArray,
-  //     absentCharArray,
-  //     correctCharArray,
-  //   };
-  //   setScore(sc);
-  // };
-
   const enterCurrentText = (word) => {
     let boardWords = boardData.boardWords;
     let rowIndex = boardData.rowIndex;
@@ -234,9 +231,14 @@ export default function GamePage() {
   };
 
   const handleKeyPress = async (key) => {
-    if (boardData.rowIndex > 5 || boardData.status === "WIN") return;
+    if (boardData.rowIndex > 5) {
+      toast.error("Better luck next time!");
+      setRefresh(true);
+      setRefreshTimer(5);
+    }
+    if (boardData.status === "WIN") return;
     if (key === "ENTER") {
-      new Audio(enter).play();
+      playenter();
       if (charArray.length === 5) {
         let word = charArray.join("").toLowerCase();
         if (!wordList[word.charAt(0)].includes(word)) {
@@ -252,16 +254,16 @@ export default function GamePage() {
       return;
     }
     if (key === "⌫") {
-      new Audio(back).play();
+      playback();
       charArray.splice(charArray.length - 1, 1);
       setCharArray([...charArray]);
     } else if (charArray.length < 5) {
-      new Audio(keysound).play();
+      playkey();
 
       charArray.push(key);
       setCharArray([...charArray]);
     }
-    enterCurrentText(charArray.join("").toLowerCase());
+    enterCurrentText(charArray.join("").toUpperCase());
   };
 
   return (
@@ -294,7 +296,7 @@ export default function GamePage() {
         <Image className="w-full" src={laxlogo} alt="logo" />
       </div>
       <div className="flex flex-col items-center">
-        {hint && <div className="subtitle">Hint: {hint}</div>}
+        <div className="subtitle">{hint && `Hint: ${hint}`}</div>{" "}
         <div className="cube">
           {[0, 1, 2, 3, 4, 5].map((row, rowIndex) => (
             <div
@@ -330,6 +332,11 @@ export default function GamePage() {
           boardData={boardData}
           handleKeyPress={handleKeyPress}
         />
+        {refreshTimer !== 0 && (
+          <div className="refresh">
+            Refreshing board in {refreshTimer} seconds
+          </div>
+        )}
       </div>
     </div>
   );

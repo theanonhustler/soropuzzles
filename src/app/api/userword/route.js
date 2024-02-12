@@ -10,10 +10,6 @@ export async function POST(req) {
       .select()
       .eq("username", data.userId)
       .single();
-    // const { data: existData, error } = await supabase
-    //   .from("table_name")
-    //   .update({points})
-    //   .eq("username", data.web3Address)
     let points = 0;
     let id = null;
     if (error) {
@@ -21,17 +17,15 @@ export async function POST(req) {
       return NextResponse.error("Internal Server Error", 500);
     }
     if (existData) {
-      console.log("points", existData);
       points = existData.points + 1;
       id = existData.id;
     }
-    console.log(id, points, "ehehjejjeje");
     const { data: updateData, error: updateError } = await supabase
       .from("table_name")
       .update({ points })
       .eq("id", id);
-    console.log(updateData, "update Data");
-    const { data: userData, error: userError } = await supabase
+
+      const { data: userData, error: userError } = await supabase
       .from("table_name")
       .select()
       .eq("username", data.userId)

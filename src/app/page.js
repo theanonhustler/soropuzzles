@@ -10,9 +10,9 @@ import {
   embeddedWallet,
   useLogin,
 } from "@thirdweb-dev/react";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export default function Page() {
-
   return (
     <ThirdwebProvider
       activeChain="ethereum"
@@ -28,7 +28,19 @@ export default function Page() {
         }),
       ]}
     >
-      <GamePage/>
+      <GamePage />
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     </ThirdwebProvider>
   );
-};
+}

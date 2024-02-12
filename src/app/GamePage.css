@@ -39,7 +39,7 @@
   font-size: 18px;
   color: #424242;
   text-align: center;
-  width: 65%;
+  width: 75%;
   margin-bottom: 18px;
 }
 .walletbtn {
@@ -103,6 +103,7 @@
 }
 .bottom {
   margin: 25px 0;
+  @apply flex flex-col items-center;
 }
 
 .cube-row.error {
@@ -171,6 +172,9 @@
 .thingy {
   width: 400px;
 }
+.refresh{
+  @apply bg-red-500 animate-pulse px-2 py-2 rounded-2xl text-xs text-center mt-2 w-fit;
+}
 @media (min-width: 100px) and (max-width: 720px) {
   .gamecontainer{
     justify-content: initial;
@@ -219,8 +223,10 @@
     margin-top: 24px;
     font-size: 16px;
     margin-bottom: 16px;
+    min-height: 48px;
   }
   .top {
     padding: 16px 16px;
   }
+
 }
