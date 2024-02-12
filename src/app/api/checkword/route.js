@@ -14,7 +14,8 @@ const fetchUserPoints = async (address) => {
   }
   const solvedWords = data?.solved || [];
   const points = data?.points || 0;
-  const response = { solvedWords, points };
+  const bonus = data.bonus;
+  const response = { solvedWords, points, bonus };
   return response;
 };
 async function updateUserPoints(address, newPoints, solvedWords) {
@@ -30,7 +31,42 @@ async function updateUserPoints(address, newPoints, solvedWords) {
 
   return true;
 }
+async function updateBonusPoints(address, newPoints) {
+  const { error } = await supabase
+    .from("table_name")
+    .update({ points: newPoints, bonus: true })
+    .eq("username", address);
+
+  if (error) {
+    console.error("Error updating user points:", error.message);
+    return false;
+  }
+
+  return true;
+}
 const enterBoardWord = async (word, solution, username, wordId) => {
+  if (username && word === "BLAST") {
+    const userData = await fetchUserPoints(username);
+    if (userData.points && !userData.bonus) {
+      const updatedPoints = userData.points + 100;
+      const success = await updateBonusPoints(username, updatedPoints);
+      if (!success) {
+        console.error("Failed to update user points.");
+      } else {
+        let sc = {
+          type: "score",
+          word,
+        };
+        sc.points = updatedPoints;
+        sc.status = "WIN";
+        sc.loggedIn = true;
+        sc.bonus = true;
+        return sc;
+      }
+    } else {
+      console.error("Failed to fetch user points.");
+    }
+  }
   let score = [];
   const matchedPositions = [];
   const correctCharArray = [];
@@ -75,9 +111,13 @@ const enterBoardWord = async (word, solution, username, wordId) => {
     if (username) {
       const userData = await fetchUserPoints(username);
       if (userData.points) {
-        const updatedPoints = userData.points + 1; 
+        const updatedPoints = userData.points + 1;
         const solvedWords = [...userData.solvedWords, wordId];
-        const success = await updateUserPoints(username, updatedPoints, solvedWords);
+        const success = await updateUserPoints(
+          username,
+          updatedPoints,
+          solvedWords
+        );
         if (!success) {
           console.error("Failed to update user points.");
         } else {

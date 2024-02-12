@@ -113,6 +113,12 @@ export default function GamePage() {
 
     if (response.ok) {
       const score = await response.json();
+      if(score.bonus){
+        toast.success("Magician indeed! 100 points awarded!")
+        setPoints(score.points);
+        resetBoard();
+      }
+      else{
       if (score.status === "WIN" && score.loggedIn) {
         setPoints(score.points);
       }
@@ -120,6 +126,7 @@ export default function GamePage() {
         setPoints(points + 1);
       }
       setScore(score);
+    }
     }
   };
   const resetBoard = () => {
