@@ -105,7 +105,7 @@ export default function SwapModal({
           <div className="swapc_infoc">
             <div className="swapc_infoc_detail">
               <Image className="h-4 w-4" src={downicon} alt="arrow" />
-              Each guess(6 chances per word) costs you -1 play.
+              Each guess(6 chances) costs you -1 play.
             </div>
             <div className="swapc_infoc_detail">
               <Image className="h-4 w-4" src={upicon} alt="arrow" />
@@ -122,7 +122,7 @@ export default function SwapModal({
 
             <div className="swapc_infoc_detail">
               <Image className="h-4 w-4" src={fwicon} alt="arrow" />
-              {`You're credited with 3 free plays every 24 hours(UTC 00:00)`}
+              {`You're credited with 3 free plays every 24 hours (UTC 00:00)`}
             </div>
           </div>
           <div className="swapc_convertc">
@@ -145,7 +145,7 @@ export default function SwapModal({
               <div className="balance">Balance: {points} points</div>
             </div>
             <div className="swapc_convertc_box2">
-              <Image className="h-12 w-12" src={swapicon} alt="arrow" />
+              <Image className="h-10 w-10 -mt-5" src={swapicon} alt="arrow" />
             </div>
             <div className="flex flex-col">
               <div className="swapc_convertc_box3 inb">
