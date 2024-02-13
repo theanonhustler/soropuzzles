@@ -173,7 +173,9 @@
   width: 400px;
 }
 .refresh{
-  @apply bg-red-500 animate-pulse px-2 py-2 rounded-2xl text-xs text-center mt-2 w-fit;
+  @apply animate-pulse px-2 py-2 rounded-2xl text-xs text-center mt-2 w-fit;
+  background-color: #05aedb;
+
 }
 @media (min-width: 100px) and (max-width: 720px) {
   .gamecontainer{

@@ -97,7 +97,6 @@ export default function ReferModal({
               inputStyle={`referredc_input ${
                 referred ? "referredc_input_success" : ""
               }`}
-              shouldAutoFocus={true}
               renderSeparator={<span className="w-1"> </span>}
               renderInput={(props) => <input disabled={referred} {...props} />}
             />

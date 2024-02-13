@@ -424,7 +424,7 @@ export default function GamePage() {
         />
         {refreshTimer !== 0 && (
           <div className="refresh">
-            Next challenge in {refreshTimer} seconds
+            {refreshTimer} seconds to take a screenshot
           </div>
         )}
       </div>
