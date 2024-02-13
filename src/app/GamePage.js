@@ -34,8 +34,8 @@ export default function GamePage() {
   const [refresh, setRefresh] = useState(false);
   const [userAddress, setUserAddress] = useState();
   const [showRefer, setShowRefer] = useState(false);
-  const [showHelp, setShowHelp] = useState(false);
-  const [showSwap, setShowSwap] = useState(true);
+  const [showHelp, setShowHelp] = useState(true);
+  const [showSwap, setShowSwap] = useState(false);
   const [playkey] = useSound("/sounds/key.mp3");
   const [playenter] = useSound("/sounds/enter.mp3");
   const [playback] = useSound("/sounds/back.mp3");
