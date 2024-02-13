@@ -48,7 +48,7 @@
   @apply absolute -top-4 -right-4 font-black text-center w-8 h-8 rounded-md text-2xl text-black cursor-pointer;
 }
 .close_help {
-  @apply absolute -top-6 right-5 font-black text-center w-8 h-8 rounded-md text-2xl text-black cursor-pointer;
+  @apply absolute -top-10 right-5 font-black text-center w-8 h-8 rounded-md text-2xl text-black cursor-pointer;
 }
 .help {
   height: 32rem;
@@ -60,6 +60,6 @@
     width: 20rem;
   }
   .close_help {
-    @apply top-2 right-4;
+    @apply -top-2 right-2;
   }
 }
