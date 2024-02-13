@@ -123,7 +123,7 @@ const enterBoardWord = async (word, solution, username, wordId, tries) => {
       const userData = await fetchUserPoints(username);
       console.log("sgshs", userData);
       if (userData) {
-        const updatedPoints = userData.points + 1;
+        const updatedPoints = userData.points + 10;
         const updatedGamePlays = userData.gameplays - 1;
         const solvedWords = [...userData.solvedWords, wordId];
         const success = await updateUserPoints(

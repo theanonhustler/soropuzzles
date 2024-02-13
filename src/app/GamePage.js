@@ -116,17 +116,18 @@ export default function GamePage() {
 
   const checkUserWord = async (word) => {
     const userId = localStorage.getItem("userId");
-    let tries = boardData.rowIndex+1;
+    let tries = boardData.rowIndex + 1;
     const response = await fetch(`/api/checkword`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ wordId, word, userId, tries}),
+      body: JSON.stringify({ wordId, word, userId, tries }),
     });
 
     if (response.ok) {
       const score = await response.json();
+
       if (score.bonus) {
         toast.success("Magician indeed! 100 points awarded!");
         setPoints(score.points);
@@ -171,7 +172,7 @@ export default function GamePage() {
     boardWords[rowIndex] = `${score.word}`;
     rowIndex++;
     const allCorrect = score.score.every((element) => element === "correct");
-
+    console.log("boardData",score);
     setBoardData({
       ...boardData,
       rowIndex,
@@ -268,7 +269,7 @@ export default function GamePage() {
   };
 
   const handleKeyPress = async (key) => {
-    if(gameplays ===0){
+    if (gameplays === 0) {
       toast.error("Buy more gameplays from points or come back tomorrow!");
       return;
     }
@@ -321,9 +322,20 @@ export default function GamePage() {
         setReferred={setReferred}
       />
       <HelpModal showHelp={showHelp} setShowHelp={setShowHelp} />
-      <SwapModal userAddress={userAddress} points={points} setPoints={setPoints} gameplays={gameplays} setGamePlays={setGamePlays} showSwap={showSwap} setShowSwap={setShowSwap} />
+      <SwapModal
+        userAddress={userAddress}
+        points={points}
+        setPoints={setPoints}
+        gameplays={gameplays}
+        setGamePlays={setGamePlays}
+        showSwap={showSwap}
+        setShowSwap={setShowSwap}
+      />
       <div className="top">
-        <div onClick={()=>setShowSwap(true)} className="flex gap-1 items-center">
+        <div
+          onClick={() => setShowSwap(true)}
+          className="flex gap-1 items-center"
+        >
           <div className="points">
             <Image className="w-4" src={staricon} alt="star icon" />
             {points} <span className="font-light">pts</span>
@@ -406,6 +418,7 @@ export default function GamePage() {
 
       <div className="bottom">
         <OnScreenKeyboard
+          score={score}
           boardData={boardData}
           handleKeyPress={handleKeyPress}
         />
