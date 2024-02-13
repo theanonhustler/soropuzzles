@@ -86,23 +86,19 @@ const enterBoardWord = async (word, solution, username, wordId, tries) => {
 
   for (let i = 0; i < word.length; i++) {
     const char = word.charAt(i);
-    if (solution.charAt(i) === char) {
+    const correctPosition = solution.indexOf(char);
+
+    if (correctPosition === -1) {
+      score.push("absent");
+      absentCharArray.push(char);
+    } else if (correctPosition === i) {
       score.push("correct");
       correctCharArray.push(char);
       matchedPositions.push(i);
-    } else if (solution.includes(char)) {
-      const correctPosition = solution.indexOf(char);
-      if (
-        correctPosition !== -1 &&
-        !matchedPositions.includes(correctPosition)
-      ) {
-        score.push("present");
-        presentCharArray.push(char);
-        matchedPositions.push(correctPosition);
-      } else {
-        score.push("absent");
-        absentCharArray.push(char);
-      }
+    } else if (!matchedPositions.includes(correctPosition)) {
+      score.push("present");
+      presentCharArray.push(char);
+      matchedPositions.push(correctPosition);
     } else {
       score.push("absent");
       absentCharArray.push(char);

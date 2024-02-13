@@ -127,7 +127,7 @@ export default function GamePage() {
 
     if (response.ok) {
       const score = await response.json();
-
+      console.log("Ssssss",score);
       if (score.bonus) {
         toast.success("Magician indeed! 100 points awarded!");
         setPoints(score.points);
