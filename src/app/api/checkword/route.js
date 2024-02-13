@@ -20,6 +20,7 @@ const fetchUserPoints = async (address) => {
   const response = { solvedWords, points, bonus, gameplays };
   return response;
 };
+
 async function updateUserPoints(
   address,
   newPoints,
@@ -78,32 +79,46 @@ const enterBoardWord = async (word, solution, username, wordId, tries) => {
       console.error("Failed to fetch user points.");
     }
   }
-  let score = [];
+
   const matchedPositions = [];
   const correctCharArray = [];
   const presentCharArray = [];
   const absentCharArray = [];
+  let score = [];
+  let correct = 0;
 
-  for (let i = 0; i < word.length; i++) {
-    const char = word.charAt(i);
-    const correctPosition = solution.indexOf(char);
-
-    if (correctPosition === -1) {
-      score.push("absent");
-      absentCharArray.push(char);
-    } else if (correctPosition === i) {
-      score.push("correct");
-      correctCharArray.push(char);
-      matchedPositions.push(i);
-    } else if (!matchedPositions.includes(correctPosition)) {
-      score.push("present");
-      presentCharArray.push(char);
-      matchedPositions.push(correctPosition);
+  let letterCount = {};
+  for (let i = 0; i < solution.length; i++) {
+    let character = solution[i];
+    if (letterCount[character]) {
+      letterCount[character] += 1;
     } else {
-      score.push("absent");
-      absentCharArray.push(char);
+      letterCount[character] = 1;
     }
   }
+  for (let index = 0; index < solution.length; index++) {
+    if (solution.charAt(index) === word[index]) {
+      score.push("correct");
+      correct += 1;
+      letterCount[word[index]] -= 1;
+      correctCharArray.push(word[index]);
+    } else {
+      score.push("PAIN");
+    }
+  }
+  for (let index = 0; index < solution.length; index++) {
+    if (score[index] !== "correct") {
+      if (solution.includes(word[index]) && letterCount[word[index]] > 0) {
+        score[index] = "present";
+        letterCount[word[index]] -= 1;
+        presentCharArray.push(word[index]);
+      } else {
+        score[index] = "absent";
+        absentCharArray.push(word[index]);
+      }
+    }
+  }
+
   let sc = {
     type: "score",
     word,

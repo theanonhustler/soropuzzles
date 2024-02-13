@@ -55,7 +55,7 @@ export async function POST(req) {
     } else {
       const response = {
         hint: "2024 is the year when we _____",
-        id: 1111,
+        id: 7645,
         completed: false,
       };
       return NextResponse.json(response);
