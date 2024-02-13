@@ -54,7 +54,7 @@
   background-color: #05aedb;
 }
 .points {
-  @apply bg-white text-slate-800 text-base rounded-2xl px-3 py-1 font-medium flex gap-2;
+  @apply bg-white text-slate-800 text-xs md:text-base rounded-2xl px-2 md:px-3 py-1 font-medium flex gap-1 md:gap-2;
 }
 
 .cube-row {

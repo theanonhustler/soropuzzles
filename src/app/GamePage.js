@@ -42,9 +42,10 @@ export default function GamePage() {
   const [referralCode, setReferralCode] = useState("");
   const [referCode, setReferCode] = useState(null);
   const [referred, setReferred] = useState(false);
+  const [gameplays, setGamePlays] = useState(1);
 
   useEffect(() => {
-    console.log("shshhss", address, typeof(address));
+    console.log("shshhss", address, typeof address);
     if (address) {
       localStorage.setItem("userId", address);
       authenticateWithWeb3(address);
@@ -99,28 +100,30 @@ export default function GamePage() {
     });
 
     if (response.ok) {
-      const { jwtToken, referralCode, points, referredBy } =
+      const { jwtToken, referralCode, points, referredBy, gameplays } =
         await response.json();
       console.log(jwtToken);
 
       localStorage.setItem("jwtToken", jwtToken);
-      if(referredBy){
+      if (referredBy) {
         setReferred(true);
         setReferCode(referredBy);
       }
       setPoints(points);
+      setGamePlays(gameplays);
       setReferralCode(referralCode);
     }
   };
 
   const checkUserWord = async (word) => {
     const userId = localStorage.getItem("userId");
+    let tries = boardData.rowIndex+1;
     const response = await fetch(`/api/checkword`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ wordId, word, userId }),
+      body: JSON.stringify({ wordId, word, userId, tries}),
     });
 
     if (response.ok) {
@@ -132,6 +135,10 @@ export default function GamePage() {
       } else {
         if (score.status === "WIN" && score.loggedIn) {
           setPoints(score.points);
+          setGamePlays(score.gameplays);
+        }
+        if (score.status === "LOST" && score.loggedIn) {
+          setGamePlays(score.gameplays);
         }
         if (score.status === "WIN" && !score.loggedIn) {
           setPoints(points + 1);
@@ -187,7 +194,7 @@ export default function GamePage() {
         setRefreshTimer(5);
         setRefresh(true);
       }
-      if (rowIndex === 5) {
+      if (rowIndex === 6) {
         toast.error("Better luck next time!");
         setRefreshTimer(5);
         setRefresh(true);
@@ -196,7 +203,7 @@ export default function GamePage() {
       if (score.status === "WIN") {
         toast.success("Woohoo LFG🚀");
       }
-      if (rowIndex === 5) {
+      if (rowIndex === 6) {
         toast.error("Better luck next time!");
         resetBoard();
       }
@@ -263,12 +270,11 @@ export default function GamePage() {
   };
 
   const handleKeyPress = async (key) => {
+    if(gameplays ===0){
+      toast.error("Buy more gameplays from points or come back tomorrow!");
+      return;
+    }
     if (!showRefer) {
-      if (boardData.rowIndex > 5) {
-        toast.error("Better luck next time!");
-        setRefresh(true);
-        setRefreshTimer(5);
-      }
       if (boardData.status === "WIN") return;
       if (key === "ENTER") {
         playenter();
@@ -313,16 +319,21 @@ export default function GamePage() {
         userAddress={userAddress}
         referCode={referCode}
         setReferCode={setReferCode}
-        referred ={referred}
-        setReferred = {setReferred}
+        referred={referred}
+        setReferred={setReferred}
       />
       <HelpModal showHelp={showHelp} setShowHelp={setShowHelp} />
       <div className="top">
-        <div className="points">
-          <Image className="w-4" src={staricon} alt="star icon" />
-          {points} pts
+        <div className="flex gap-1 items-center">
+          <div className="points">
+            <Image className="w-4" src={staricon} alt="star icon" />
+            {points} <span className="font-light">pts</span>
+          </div>
+          <div className="points">
+            <Image className="w-4" src={staricon} alt="star icon" />
+            {gameplays} <span className="font-light">plays</span>
+          </div>
         </div>
-
         {/* <div className="reset-board" onClick={resetBoard}>
           {"\u27f3"}
         </div> */}
@@ -331,7 +342,7 @@ export default function GamePage() {
             onClick={() => {
               setShowHelp(true);
             }}
-            className="w-9 h-9"
+            className="w-8 h-8 md:w-9 md:h-9"
             src={helpicon}
             alt="refer"
           />
@@ -339,7 +350,7 @@ export default function GamePage() {
             onClick={() => {
               setShowRefer(true);
             }}
-            className="w-9 h-9"
+            className="w-8 h-8 md:w-9 md:h-9"
             src={refericon}
             alt="refer"
           />

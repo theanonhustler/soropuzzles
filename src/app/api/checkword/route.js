@@ -15,14 +15,24 @@ const fetchUserPoints = async (address) => {
   console.log("hellllo", data);
   const solvedWords = data?.solved || [];
   const points = data?.points || 0;
+  const gameplays = data?.gameplays || 0;
   const bonus = data.bonus;
-  const response = { solvedWords, points, bonus };
+  const response = { solvedWords, points, bonus, gameplays };
   return response;
 };
-async function updateUserPoints(address, newPoints, solvedWords) {
+async function updateUserPoints(
+  address,
+  newPoints,
+  updatedGamePlays,
+  solvedWords
+) {
   const { error } = await supabase
     .from("table_name")
-    .update({ points: newPoints, solved: solvedWords })
+    .update({
+      points: newPoints,
+      gameplays: updatedGamePlays,
+      solved: solvedWords,
+    })
     .eq("username", address);
 
   if (error) {
@@ -45,7 +55,7 @@ async function updateBonusPoints(address, newPoints) {
 
   return true;
 }
-const enterBoardWord = async (word, solution, username, wordId) => {
+const enterBoardWord = async (word, solution, username, wordId, tries) => {
   if (username && word === "BLAST") {
     const userData = await fetchUserPoints(username);
     if (userData.points && !userData.bonus) {
@@ -114,10 +124,12 @@ const enterBoardWord = async (word, solution, username, wordId) => {
       console.log("sgshs", userData);
       if (userData) {
         const updatedPoints = userData.points + 1;
+        const updatedGamePlays = userData.gameplays - 1;
         const solvedWords = [...userData.solvedWords, wordId];
         const success = await updateUserPoints(
           username,
           updatedPoints,
+          updatedGamePlays,
           solvedWords
         );
         if (!success) {
@@ -126,6 +138,7 @@ const enterBoardWord = async (word, solution, username, wordId) => {
           sc.points = updatedPoints;
           sc.status = "WIN";
           sc.loggedIn = true;
+          sc.gameplays = updatedGamePlays;
         }
       } else {
         console.error("Failed to fetch user points.");
@@ -135,7 +148,31 @@ const enterBoardWord = async (word, solution, username, wordId) => {
       sc.loggedIn = false;
     }
   }
-
+  if (!allCorrect && tries === 6) {
+    if (username) {
+      const userData = await fetchUserPoints(username);
+      if (userData) {
+        const updatedPoints = userData.points;
+        const updatedGamePlays = userData.gameplays - 1;
+        const solvedWords = [...userData.solvedWords];
+        const success = await updateUserPoints(
+          username,
+          updatedPoints,
+          updatedGamePlays,
+          solvedWords
+        );
+        if (!success) {
+          console.error("Failed to update user points.");
+        } else {
+          sc.status = "LOST";
+          sc.loggedIn = true;
+          sc.gameplays = updatedGamePlays;
+        }
+      } else {
+        console.error("Failed to fetch user points.");
+      }
+    }
+  }
   return sc;
 };
 export async function POST(req) {
@@ -157,7 +194,14 @@ export async function POST(req) {
       const word = data.word.toUpperCase();
       const username = data.userId.toString();
       const wordId = data.wordId;
-      const score = await enterBoardWord(word, solution, username, wordId);
+      const tries = data.tries;
+      const score = await enterBoardWord(
+        word,
+        solution,
+        username,
+        wordId,
+        tries
+      );
       console.log(score);
       return NextResponse.json(score);
     }

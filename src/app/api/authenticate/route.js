@@ -42,6 +42,7 @@ export async function POST(req) {
     let referralCode = null;
     let referredBy = null;
     let points = 0;
+    let gameplays = 10;
     if (error) {
       console.log("err", error);
       userId = generateShortUserId();
@@ -63,11 +64,12 @@ export async function POST(req) {
       points = existData.points;
       referralCode = existData.referralCode;
       referredBy = existData.referredBy;
+      gameplays = existData.gameplays;
     }
     console.log(userId, "existData");
     const jwtToken = createJwt(data.web3Address);
     console.log(jwtToken);
-    return NextResponse.json({ userId, jwtToken, points, referralCode, referredBy });
+    return NextResponse.json({ userId, jwtToken, points, referralCode, referredBy, gameplays });
   } catch (error) {
     console.error("Error processing authentication request:", error.message);
     return NextResponse.error("Internal Server Error", 500);
