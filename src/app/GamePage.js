@@ -40,8 +40,10 @@ export default function GamePage() {
   const [playenter] = useSound("/sounds/enter.mp3");
   const [playback] = useSound("/sounds/back.mp3");
   const [referralCode, setReferralCode] = useState("");
+  const [referCode, setReferCode] = useState(null);
+  const [referred, setReferred] = useState(false);
+
   useEffect(() => {
-    console.log(address);
 
     if (address) {
       localStorage.setItem("userId", address);
@@ -97,10 +99,15 @@ export default function GamePage() {
     });
 
     if (response.ok) {
-      const { jwtToken, referralCode, points } = await response.json();
+      const { jwtToken, referralCode, points, referredBy } =
+        await response.json();
       console.log(jwtToken);
 
       localStorage.setItem("jwtToken", jwtToken);
+      if(referredBy){
+        setReferred(true);
+        setReferCode(referredBy);
+      }
       setPoints(points);
       setReferralCode(referralCode);
     }
@@ -298,7 +305,17 @@ export default function GamePage() {
       style={{ filter: showRefer || showHelp ? "blur(10px)" : "none" }}
       className="gamecontainer"
     >
-      <ReferModal showRefer={showRefer} setShowRefer={setShowRefer} referralCode ={referralCode} />
+      <ReferModal
+        showRefer={showRefer}
+        setShowRefer={setShowRefer}
+        setPoints={setPoints}
+        referralCode={referralCode}
+        userAddress={userAddress}
+        referCode={referCode}
+        setReferCode={setReferCode}
+        referred ={referred}
+        setReferred = {setReferred}
+      />
       <HelpModal showHelp={showHelp} setShowHelp={setShowHelp} />
       <div className="top">
         <div className="points">

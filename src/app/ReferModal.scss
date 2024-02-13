@@ -9,7 +9,7 @@
     @apply text-sm font-light mb-2;
   }
   &_codec {
-    @apply px-5 py-2 w-fit text-black font-bold;
+    @apply px-5 py-2 w-fit text-black font-bold cursor-pointer;
     background-color: #fade42;
   }
   &_copyc {
@@ -32,9 +32,16 @@
     @apply w-12 h-8 flex justify-center items-center outline-none text-lg font-bold text-black text-center;
     background-color: #fade42;
     width: 24px !important;
+    &_success {
+      background: #42d941;
+      color: #ffffff;
+    }
   }
   &_enter {
     @apply bg-white h-8 w-8 font-bold text-black text-xl rounded-full;
+    &_disabled{
+      @apply pointer-events-none opacity-50;
+    }
   }
 }
 .close {
@@ -46,14 +53,13 @@
 .help {
   height: 32rem;
   width: 28rem;
-
 }
-  @media (min-width: 100px) and (max-width: 720px) {
-    .help{
+@media (min-width: 100px) and (max-width: 720px) {
+  .help {
     height: 26rem;
     width: 20rem;
-    }
-    .close_help{
-        @apply top-2 right-4;
-    }
   }
+  .close_help {
+    @apply top-2 right-4;
+  }
+}
