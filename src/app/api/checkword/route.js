@@ -192,7 +192,7 @@ export async function POST(req) {
     if (existData) {
       const solution = existData.word;
       const word = data.word.toUpperCase();
-      const username = data.userId.toString();
+      const username = data.userId;
       const wordId = data.wordId;
       const tries = data.tries;
       const score = await enterBoardWord(
