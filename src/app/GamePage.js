@@ -43,7 +43,7 @@ export default function GamePage() {
   const [referCode, setReferCode] = useState("");
   const [referred, setReferred] = useState(false);
   const [gameplays, setGamePlays] = useState(1);
-    const router = useRouter();
+  const router = useRouter();
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -137,7 +137,7 @@ export default function GamePage() {
 
     if (response.ok) {
       const score = await response.json();
-      console.log("Ssssss",score);
+      console.log("Ssssss", score);
       if (score.bonus) {
         toast.success("Magician indeed! 100 points awarded!");
         setPoints(score.points);
@@ -182,7 +182,7 @@ export default function GamePage() {
     boardWords[rowIndex] = `${score.word}`;
     rowIndex++;
     const allCorrect = score.score.every((element) => element === "correct");
-    console.log("boardData",score);
+    console.log("boardData", score);
     setBoardData({
       ...boardData,
       rowIndex,
@@ -280,7 +280,11 @@ export default function GamePage() {
 
   const handleKeyPress = async (key) => {
     if (gameplays === 0) {
-      toast.error("Buy more gameplays from points or come back tomorrow!");
+      toast.error("Convert your points to gameplays above or come back tomorrow!");
+      return;
+    }
+    if (points === 1 && !userAddress) {
+      toast.error("Please login to keep playing!");
       return;
     }
     if (!showRefer) {
