@@ -152,6 +152,7 @@ export default function GamePage() {
         }
         if (score.status === "WIN" && !score.loggedIn) {
           setPoints(points + 1);
+          setGamePlays(gameplays - 1);
         }
         setScore(score);
       }
@@ -280,7 +281,9 @@ export default function GamePage() {
 
   const handleKeyPress = async (key) => {
     if (gameplays === 0) {
-      toast.error("Convert your points to gameplays above or come back tomorrow!");
+      toast.error(
+        "Convert your points to gameplays above or come back tomorrow!"
+      );
       return;
     }
     if (points === 1 && !userAddress) {
@@ -367,7 +370,7 @@ export default function GamePage() {
             onClick={() => {
               setShowHelp(true);
             }}
-            className="w-8 h-8 md:w-9 md:h-9"
+            className="w-8 h-8 md:w-9 md:h-9 cursor-pointer"
             src={helpicon}
             alt="refer"
           />
@@ -375,7 +378,7 @@ export default function GamePage() {
             onClick={() => {
               setShowRefer(true);
             }}
-            className="w-8 h-8 md:w-9 md:h-9"
+            className="w-8 h-8 md:w-9 md:h-9 cursor-pointer"
             src={refericon}
             alt="refer"
           />
