@@ -10,9 +10,9 @@ const projectId = "1dbd4cfa0a116a8e741e0e548a3c17da";
 
 // 2. Create wagmiConfig
 const metadata = {
-  name: "Wordl3",
-  description: "Just connect and get wordling",
-  url: "https://wordl3.app",
+  name: "3lax",
+  description: "3lax it's just Web3",
+  url: "https://3lax.com",
   icons: ["https://avatars.githubusercontent.com/u/37784886"],
 };
 

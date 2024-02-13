@@ -15,6 +15,7 @@ import toast from "react-hot-toast";
 import ReferModal from "./ReferModal";
 import HelpModal from "./HelpModal";
 import SwapModal from "./SwapModal";
+import { useRouter } from "next/navigation";
 
 import useSound from "use-sound";
 
@@ -42,7 +43,16 @@ export default function GamePage() {
   const [referCode, setReferCode] = useState("");
   const [referred, setReferred] = useState(false);
   const [gameplays, setGamePlays] = useState(1);
+    const router = useRouter();
 
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const refer = urlParams.get("refer");
+
+    if (refer) {
+      setReferCode(refer);
+    }
+  }, []);
   useEffect(() => {
     console.log("shshhss", address, typeof address);
     if (address) {

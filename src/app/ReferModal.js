@@ -35,7 +35,7 @@ export default function ReferModal({
         const responseData = await response.json();
         console.log("Referral code submitted successfully");
         console.log(responseData);
-        toast.success("Referral Data set successfully");
+        toast.success("Woohoo LFG🚀");
         setReferred(true);
         setPoints(responseData.points);
       } else {
@@ -71,7 +71,10 @@ export default function ReferModal({
           <div className="referc_title">Unlock More Gameplays</div>
           <div className="referc_subtitle">Invite frens to 3lax</div>
           <div
-            onClick={() => navigator.clipboard.writeText(referralCode)}
+            onClick={() => {
+              navigator.clipboard.writeText(`3lax.com?refer=${referralCode}`);
+              toast.success("Copied to clipboard");
+            }}
             className="referc_codec"
           >
             {referralCode}
@@ -79,7 +82,10 @@ export default function ReferModal({
           <div className="referc_copyc">
             <Image className="h-4 w-4" src={copyicon} alt="copy" />{" "}
             <div
-              onClick={() => navigator.clipboard.writeText(referralCode)}
+              onClick={() => {
+                navigator.clipboard.writeText(`3lax.com?refer=${referralCode}`);
+                toast.success("Copied to clipboard");
+              }}
               className="ml-1 opacity-70"
             >
               Copy & Share
@@ -107,7 +113,7 @@ export default function ReferModal({
                 await handleReferSubmit();
               }}
               className={`referredc_enter ${
-                referred || ( referCode.length < 6) || !userAddress
+                referred || referCode.length < 6 || !userAddress
                   ? "referredc_enter_disabled"
                   : ""
               }`}
