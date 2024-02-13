@@ -44,7 +44,7 @@ export default function GamePage() {
   const [referred, setReferred] = useState(false);
 
   useEffect(() => {
-
+    console.log("shshhss", address, typeof(address));
     if (address) {
       localStorage.setItem("userId", address);
       authenticateWithWeb3(address);

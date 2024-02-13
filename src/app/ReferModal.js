@@ -90,19 +90,6 @@ export default function ReferModal({
           <div className="referredc_title">Unlock More Gameplays</div>
           <div className="referredc_subtitle">Invite frens to 3lax</div>
           <div className="referredc_inputc">
-            {/* {inputValues.map((value, index) => (
-              <input
-                key={index}
-                ref={(input) => (inputsRef.current[index] = input)}
-                type="text"
-                maxLength={1}
-                className="referredc_input"
-                value={value}
-                onChange={(event) => handleInputChange(index, event)}
-                onKeyDown={(event) => handleKeyPress(index, event)}
-                onPaste={handlePaste}
-              />
-            ))} */}
             <OtpInput
               value={referCode}
               onChange={handleChange}
@@ -123,6 +110,11 @@ export default function ReferModal({
               }`}
             >{`->`}</button>
           </div>
+          <div
+            className={`referredc_message ${
+              referred ? "referredc_input_success" : ""
+            }`}
+          ></div>
         </div>
       </div>
     </Modal>

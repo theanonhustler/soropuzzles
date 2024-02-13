@@ -12,6 +12,7 @@ const fetchUserPoints = async (address) => {
     console.error("Error fetching user points:", error.message);
     return null;
   }
+  console.log("hellllo", data);
   const solvedWords = data?.solved || [];
   const points = data?.points || 0;
   const bonus = data.bonus;
@@ -110,7 +111,8 @@ const enterBoardWord = async (word, solution, username, wordId) => {
   if (allCorrect) {
     if (username) {
       const userData = await fetchUserPoints(username);
-      if (userData.points) {
+      console.log("sgshs", userData);
+      if (userData) {
         const updatedPoints = userData.points + 1;
         const solvedWords = [...userData.solvedWords, wordId];
         const success = await updateUserPoints(
@@ -153,7 +155,7 @@ export async function POST(req) {
     if (existData) {
       const solution = existData.word;
       const word = data.word.toUpperCase();
-      const username = data.userId;
+      const username = data.userId.toString();
       const wordId = data.wordId;
       const score = await enterBoardWord(word, solution, username, wordId);
       console.log(score);
