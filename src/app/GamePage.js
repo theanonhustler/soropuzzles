@@ -11,14 +11,12 @@ import laxlogo from "../assets/3lax.svg";
 import refericon from "../assets/refer.svg";
 import helpicon from "../assets/help.svg";
 import Image from "next/image";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import ReferModal from "./ReferModal";
 import HelpModal from "./HelpModal";
+import SwapModal from "./SwapModal";
 
 import useSound from "use-sound";
-let correctCharArray = [];
-let presentCharArray = [];
-let absentCharArray = [];
 
 export default function GamePage() {
   const [boardData, setBoardData] = useState();
@@ -35,7 +33,8 @@ export default function GamePage() {
   const [refresh, setRefresh] = useState(false);
   const [userAddress, setUserAddress] = useState();
   const [showRefer, setShowRefer] = useState(false);
-  const [showHelp, setShowHelp] = useState(true);
+  const [showHelp, setShowHelp] = useState(false);
+  const [showSwap, setShowSwap] = useState(true);
   const [playkey] = useSound("/sounds/key.mp3");
   const [playenter] = useSound("/sounds/enter.mp3");
   const [playback] = useSound("/sounds/back.mp3");
@@ -265,7 +264,6 @@ export default function GamePage() {
       ...boardData,
       boardWords: boardWords,
     };
-    console.log(newBoardData);
     setBoardData(newBoardData);
   };
 
@@ -323,8 +321,9 @@ export default function GamePage() {
         setReferred={setReferred}
       />
       <HelpModal showHelp={showHelp} setShowHelp={setShowHelp} />
+      <SwapModal userAddress={userAddress} points={points} setPoints={setPoints} gameplays={gameplays} setGamePlays={setGamePlays} showSwap={showSwap} setShowSwap={setShowSwap} />
       <div className="top">
-        <div className="flex gap-1 items-center">
+        <div onClick={()=>setShowSwap(true)} className="flex gap-1 items-center">
           <div className="points">
             <Image className="w-4" src={staricon} alt="star icon" />
             {points} <span className="font-light">pts</span>
