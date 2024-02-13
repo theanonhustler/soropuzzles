@@ -11,7 +11,7 @@ import laxlogo from "../assets/3lax.svg";
 import refericon from "../assets/refer.svg";
 import helpicon from "../assets/help.svg";
 import Image from "next/image";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import ReferModal from "./ReferModal";
 import HelpModal from "./HelpModal";
 import SwapModal from "./SwapModal";
@@ -39,7 +39,7 @@ export default function GamePage() {
   const [playenter] = useSound("/sounds/enter.mp3");
   const [playback] = useSound("/sounds/back.mp3");
   const [referralCode, setReferralCode] = useState("");
-  const [referCode, setReferCode] = useState(null);
+  const [referCode, setReferCode] = useState("");
   const [referred, setReferred] = useState(false);
   const [gameplays, setGamePlays] = useState(1);
 

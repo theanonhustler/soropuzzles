@@ -5,7 +5,7 @@ import closeicon from "../assets/close_refer.svg";
 import Image from "next/image";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import OtpInput from "react-otp-input";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 
 export default function ReferModal({
   showRefer,
@@ -87,8 +87,10 @@ export default function ReferModal({
           </div>
         </div>
         <div className="referredc">
-          <div className="referredc_title">Unlock More Gameplays</div>
-          <div className="referredc_subtitle">Invite frens to 3lax</div>
+          <div className="referredc_title">Got an invite code?</div>
+          <div className="referredc_subtitle">
+            Enter code to unlock 10 points
+          </div>
           <div className="referredc_inputc">
             <OtpInput
               value={referCode}
@@ -105,7 +107,9 @@ export default function ReferModal({
                 await handleReferSubmit();
               }}
               className={`referredc_enter ${
-                referred ? "referredc_enter_disabled" : ""
+                referred || ( referCode.length < 6) || !userAddress
+                  ? "referredc_enter_disabled"
+                  : ""
               }`}
             >{`->`}</button>
           </div>

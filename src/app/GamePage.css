@@ -1,8 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Borel&display=swap");
-@font-face {
-  font-family: "Futura";
-  src: url("../fonts/futura_light.ttf") format("truetype"); /* Safari, Android, iOS */
-}
+
 .gamecontainer {
   display: flex;
   background: linear-gradient(
@@ -35,7 +32,6 @@
   color: #0098e9;
 }
 .subtitle {
-  font-family: "Futura", cursive;
   font-size: 18px;
   color: #424242;
   text-align: center;
@@ -48,6 +44,7 @@
   font-size: 14px !important;
   padding: 10px 18px !important;
   border-radius: 16px !important;
+  background-color: white !important;
 }
 .connectedbtn {
   @apply text-base text-white font-medium rounded-2xl px-3 py-1;

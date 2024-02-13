@@ -5,7 +5,10 @@
 @import './OnScreenKeyboard.scss';
 @import './ReferModal.scss';
 @import './SwapModal.scss';
-
+@font-face {
+  font-family: "Futura";
+  src: url("../fonts/futura_light.ttf") format("truetype"); /* Safari, Android, iOS */
+}
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -22,6 +25,7 @@
 
 body {
   color: rgb(var(--foreground-rgb));
+  font-family: "Futura", cursive;
   background: linear-gradient(
       to bottom,
       transparent,

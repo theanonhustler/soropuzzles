@@ -10,7 +10,8 @@
     line-height: 100%;
   }
   &_infoc {
-    @apply flex w-full flex-col gap-1 justify-center text-xs font-light my-3;
+    @apply flex w-full flex-col gap-1 justify-center font-light my-3;
+    font-size: 10px;
     &_detail {
       @apply flex gap-2 items-center;
     }

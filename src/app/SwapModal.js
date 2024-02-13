@@ -85,7 +85,7 @@ export default function SwapModal({
       className="align-middle justify-center items-center outline-none justify-items-center flex h-screen"
     >
       <div
-        style={{ height: "420px" }}
+        style={{ height: "450px" }}
         className="outline-none w-72 flex flex-col justify-center items-center rounded-xl relative"
       >
         <div
@@ -100,28 +100,29 @@ export default function SwapModal({
           <div className="swapc_title">Point-Play Economics</div>
           <div className="swapc_subtitle">
             <div>How to keep 3laxing</div>
-            <div>more&more everyday</div>
+            <div>more & more everyday</div>
           </div>
           <div className="swapc_infoc">
             <div className="swapc_infoc_detail">
+              <Image className="h-4 w-4" src={downicon} alt="arrow" />
+              Each guess(6 chances per word) costs you -1 play.
+            </div>
+            <div className="swapc_infoc_detail">
+              <Image className="h-4 w-4" src={upicon} alt="arrow" />
+              Each correct guess earns you 10 points.
+            </div>
+            <div className="swapc_infoc_detail">
+              <Image className="h-4 w-4" src={upicon} alt="arrow" />
+              For every referral, you & your frens get 10 points each.
+            </div>
+            <div className="swapc_infoc_detail">
               <Image className="h-4 w-4" src={fwicon} alt="arrow" />
-              Each guess costs you -1 play
+              You can swap points for plays anytime.
             </div>
+
             <div className="swapc_infoc_detail">
-              <Image className="h-4 w-4" src={upicon} alt="arrow" />
-              Each guess costs you -1 play
-            </div>
-            <div className="swapc_infoc_detail">
-              <Image className="h-4 w-4" src={upicon} alt="arrow" />
-              For every referral, you get 20 points.
-            </div>
-            <div className="swapc_infoc_detail">
-              <Image className="h-4 w-4" src={downicon} alt="arrow" />
-              Each guess costs you -1 play
-            </div>
-            <div className="swapc_infoc_detail">
-              <Image className="h-4 w-4" src={downicon} alt="arrow" />
-              Each guess costs you -1 play
+              <Image className="h-4 w-4" src={fwicon} alt="arrow" />
+              {`You're credited with 3 free plays every 24 hours(UTC 00:00)`}
             </div>
           </div>
           <div className="swapc_convertc">
