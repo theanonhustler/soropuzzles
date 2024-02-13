@@ -280,16 +280,17 @@ export default function GamePage() {
   };
 
   const handleKeyPress = async (key) => {
+        if (points === 1 && !userAddress) {
+          toast.error("Please login to keep playing!");
+          return;
+        }
     if (gameplays === 0) {
       toast.error(
         "Convert your points to gameplays above or come back tomorrow!"
       );
       return;
     }
-    if (points === 1 && !userAddress) {
-      toast.error("Please login to keep playing!");
-      return;
-    }
+
     if (!showRefer) {
       if (boardData.status === "WIN") return;
       if (key === "ENTER") {
