@@ -69,10 +69,10 @@ export default function ReferModal({
         </div>
         <div className="referc">
           <div className="referc_title">Unlock More Gameplays</div>
-          <div className="referc_subtitle">Invite frens to 3lax</div>
+          <div className="referc_subtitle">Invite frens to Soropuzzles</div>
           <div
             onClick={() => {
-              navigator.clipboard.writeText(`3lax.com?refer=${referralCode}`);
+              navigator.clipboard.writeText(`soropuzzles.xyz?refer=${referralCode}`);
               toast.success("Copied to clipboard");
             }}
             className="referc_codec"
@@ -83,7 +83,7 @@ export default function ReferModal({
             <Image className="h-4 w-4" src={copyicon} alt="copy" />{" "}
             <div
               onClick={() => {
-                navigator.clipboard.writeText(`3lax.com?refer=${referralCode}`);
+                navigator.clipboard.writeText(`soropuzzles.xyz?refer=${referralCode}`);
                 toast.success("Copied to clipboard");
               }}
               className="ml-1 opacity-70"

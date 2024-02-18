@@ -3,7 +3,7 @@ import { supabase } from "../../../lib/supabase";
 
 const fetchUserPoints = async (address) => {
   const { data, error } = await supabase
-    .from("table_name")
+    .from("users")
     .select()
     .eq("username", address)
     .single();
@@ -28,7 +28,7 @@ async function updateUserPoints(
   solvedWords
 ) {
   const { error } = await supabase
-    .from("table_name")
+    .from("users")
     .update({
       points: newPoints,
       gameplays: updatedGamePlays,
@@ -45,7 +45,7 @@ async function updateUserPoints(
 }
 async function updateBonusPoints(address, newPoints) {
   const { error } = await supabase
-    .from("table_name")
+    .from("users")
     .update({ points: newPoints, bonus: true })
     .eq("username", address);
 
@@ -57,7 +57,7 @@ async function updateBonusPoints(address, newPoints) {
   return true;
 }
 const enterBoardWord = async (word, solution, username, wordId, tries) => {
-  if (username && word === "BLAST") {
+  if (username && word === "LUMEN") {
     const userData = await fetchUserPoints(username);
     if (userData.points && !userData.bonus) {
       const updatedPoints = userData.points + 100;

@@ -4,7 +4,7 @@ import { supabase } from "../../../lib/supabase";
 
 const updateReferrerPoints = async (userIdToUpdate, points, numRef) => {
   const { data, error } = await supabase
-    .from("table_name")
+    .from("users")
     .update({ points, numRef })
     .eq("username", userIdToUpdate);
 
@@ -17,7 +17,7 @@ const updateReferrerPoints = async (userIdToUpdate, points, numRef) => {
 };
 const updateRefereePoints = async (userIdToUpdate, points, referredBy) => {
   const { data, error } = await supabase
-    .from("table_name")
+    .from("users")
     .update({ points, referredBy })
     .eq("username", userIdToUpdate);
 
@@ -33,7 +33,7 @@ export async function POST(req) {
     const { referralCode, userAddress } = await req.json();
 
     const { data: userData, error: userError } = await supabase
-      .from("table_name")
+      .from("users")
       .select()
       .eq("username", userAddress)
       .single();
@@ -60,7 +60,7 @@ export async function POST(req) {
       );
     }
     const { data: referralData, error: referralError } = await supabase
-      .from("table_name")
+      .from("users")
       .select()
       .eq("referralCode", referralCode)
       .single();

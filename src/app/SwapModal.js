@@ -99,8 +99,8 @@ export default function SwapModal({
         <div className="swapc">
           <div className="swapc_title">Point-Play Economics</div>
           <div className="swapc_subtitle">
-            <div>How to keep 3laxing</div>
-            <div>more & more everyday</div>
+            <div>Convert points to</div>
+            <div>plays & have fun</div>
           </div>
           <div className="swapc_infoc">
             <div className="swapc_infoc_detail">

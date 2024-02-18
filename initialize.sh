@@ -57,10 +57,10 @@ soroban config network add \
 
 echo Add $NETWORK to .soroban for use with npm scripts
 mkdir -p .soroban
-mkdir -p .soroban-example-dapp
-echo $NETWORK > ./.soroban-example-dapp/network
-echo $SOROBAN_RPC_URL > ./.soroban-example-dapp/rpc-url
-echo "$SOROBAN_NETWORK_PASSPHRASE" > ./.soroban-example-dapp/passphrase
+mkdir -p .soroban-soropuzzles
+echo $NETWORK > ./.soroban-soropuzzles/network
+echo $SOROBAN_RPC_URL > ./.soroban-soropuzzles/rpc-url
+echo "$SOROBAN_NETWORK_PASSPHRASE" > ./.soroban-soropuzzles/passphrase
 echo "{ \"network\": \"$NETWORK\", \"rpcUrl\": \"$SOROBAN_RPC_URL\", \"networkPassphrase\": \"$SOROBAN_NETWORK_PASSPHRASE\" }" > ./shared/config.json
 
 if !(soroban config identity ls | grep example-user 2>&1 >/dev/null); then
@@ -70,10 +70,10 @@ fi
 
 
 EXAMPLE_USER_ADDRESS="$(soroban config identity address example-user)"
-echo $EXAMPLE_USER_ADDRESS> ./.soroban-example-dapp/address
+echo $EXAMPLE_USER_ADDRESS> ./.soroban-soropuzzles/address
 
 EXAMPLE_USER_SECRET="$(soroban config identity show example-user)"
-echo $EXAMPLE_USER_SECRET > ./.soroban-example-dapp/secret
+echo $EXAMPLE_USER_SECRET > ./.soroban-soropuzzles/secret
 
 # This will fail if the account already exists, but it'll still be fine.
 echo Fund example-user account from friendbot
@@ -84,14 +84,14 @@ ARGS="--network $NETWORK --source example-user"
 echo Build contracts
 soroban contract build
 
-echo Deploy the hello world contract
+echo Deploy the soropuzzles contract
 
-HELLO_WORLD_ID="$(
+SOROPUZZLES_ID="$(
   soroban contract deploy $ARGS \
-    --wasm target/wasm32-unknown-unknown/release/soroban_modified_hello_world_contract.wasm
+    --wasm target/wasm32-unknown-unknown/release/soropuzzles_project.wasm
 )"
 
-echo "Contract deployed succesfully with ID: $HELLO_WORLD_ID"
-echo "$HELLO_WORLD_ID" > .soroban/hello_world_id
+echo "Contract deployed succesfully with ID: $SOROPUZZLES_ID"
+echo "$SOROPUZZLES_ID" > .soroban/soropuzzles_id
 
 echo "Done"

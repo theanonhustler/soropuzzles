@@ -4,7 +4,7 @@ import { supabase } from "../../../lib/supabase";
 
 const updatePointsAndGameplays = async (userIdToUpdate, points, gameplays) => {
   const { data, error } = await supabase
-    .from("table_name")
+    .from("users")
     .update({ points, gameplays })
     .eq("username", userIdToUpdate);
 
@@ -26,7 +26,7 @@ export async function POST(req) {
       );
     }
     const { data: userData, error: userError } = await supabase
-      .from("table_name")
+      .from("users")
       .select()
       .eq("username", userAddress)
       .single();

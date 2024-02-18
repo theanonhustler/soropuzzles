@@ -9,7 +9,7 @@ export async function POST(req) {
     if (data.username) {
       console.log(data.username);
       const { data: userSolvedData, error } = await supabase
-        .from("table_name")
+        .from("users")
         .select("solved")
         .eq("username", data.username)
         .single();
@@ -54,8 +54,8 @@ export async function POST(req) {
       return NextResponse.json(response);
     } else {
       const response = {
-        hint: "2024 is the year when we _____",
-        id: 1111,
+        hint: "Stellar's consensus where nodes _____",
+        id: 2222,
         completed: false,
       };
       return NextResponse.json(response);

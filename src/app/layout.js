@@ -4,8 +4,8 @@ import "./globals.scss";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "3lax",
-  description: "Relax it's just Web3",
+  title: "soropuzzles",
+  description: "Fun word based puzzles on Stellar",
 };
 
 export default function RootLayout({ children }) {

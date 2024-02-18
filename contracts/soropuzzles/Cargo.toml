@@ -1,5 +1,5 @@
 [package]
-name = "soroban-modified-hello-world-contract"
+name = "soropuzzles-project"
 version = "0.0.0"
 edition = "2021"
 publish = false

@@ -1,0 +1,58 @@
+.walletc {
+  @apply w-full h-full flex flex-col items-center rounded-xl p-6 text-white;
+  background: linear-gradient(
+    180deg,
+    #000000 0%,
+    #000000 100%
+  );
+    &_title {
+    @apply text-xl font-bold;
+    color: #ffffff;
+  }
+  &_subtitle {
+    @apply flex flex-col text-sm md:text-base  font-light justify-center items-center my-3;
+    line-height: 100%;
+  }
+  &_btn{
+    @apply bg-slate-400 px-4 py-2 rounded-lg;
+  }
+  &_con{
+    @apply h-32 flex flex-col justify-center items-center;
+  }
+  &_alert{
+    @apply px-2 py-1 text-sm rounded-md absolute bottom-6  bg-orange-800;
+  }
+  &_inputc{
+      @apply bg-slate-700 rounded-lg text-xs flex w-full mt-2 justify-between px-2 py-2;
+      &_input{
+        @apply text-ellipsis;
+      }
+      &_img{
+        @apply w-4 h-4;
+      }
+
+  }
+  &_infoc {
+    @apply flex w-full flex-col gap-1 justify-center font-light my-3;
+    font-size: 10px;
+    &_detail {
+      @apply flex gap-2 items-center;
+    }
+  }
+  &_convertc {
+    @apply flex w-full items-center justify-between px-4 my-4;
+  }
+  &_convertb{
+    @apply cursor-pointer w-32;
+    &_disabled{
+        @apply opacity-50 pointer-events-none;
+    }
+  }
+}
+.inb {
+  @apply h-16 w-16 bg-white rounded-lg relative flex justify-center items-center text-xl font-bold;
+}
+.balance{
+    @apply mt-2;
+    font-size: 8px;
+}

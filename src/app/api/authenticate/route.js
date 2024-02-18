@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import { supabase } from "../../../lib/supabase";
+import { TransactionBuilder, Account, Horizon } from "@stellar/stellar-sdk";
 
 const createJwt = (web3Address) => {
   const secretKey = "your-secret-key";
@@ -34,7 +35,7 @@ export async function POST(req) {
     const data = await req.json();
     console.log(data);
     const { data: existData, error } = await supabase
-      .from("table_name")
+      .from("users")
       .select()
       .eq("username", data.web3Address)
       .single();
@@ -48,7 +49,7 @@ export async function POST(req) {
       userId = generateShortUserId();
       referralCode = generateReferalCode();
       const { data: newUser, error: newUserError } = await supabase
-        .from("table_name")
+        .from("users")
         .upsert(
           [{ id: userId, username: data.web3Address, referralCode }] // User data to upserts
         );

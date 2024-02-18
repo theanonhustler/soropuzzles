@@ -5,15 +5,15 @@ import { wordList } from "./config";
 // import { toString as uint8ArrayToString } from "uint8arrays/to-string";
 import OnScreenKeyboard from "./OnScreenKeyboard";
 import { endpoint } from "../utils/endpoint";
-import { ConnectWallet, useUser, useAddress } from "@thirdweb-dev/react";
 import staricon from "../assets/star-icon.svg";
-import laxlogo from "../assets/3lax.svg";
+import laxlogo from "../assets/soropuzzles.svg";
 import refericon from "../assets/refer.svg";
 import helpicon from "../assets/help.svg";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import ReferModal from "./ReferModal";
 import HelpModal from "./HelpModal";
+import GenerateWallet from "./GenerateWallet";
 import SwapModal from "./SwapModal";
 import { useRouter } from "next/navigation";
 
@@ -28,7 +28,6 @@ export default function GamePage() {
   const [hint, setHint] = useState("");
   const [score, setScore] = useState({});
   const [points, setPoints] = useState(0);
-  const address = useAddress();
   const [wordId, setWordId] = useState();
   const [refreshTimer, setRefreshTimer] = useState(0);
   const [refresh, setRefresh] = useState(false);
@@ -36,6 +35,7 @@ export default function GamePage() {
   const [showRefer, setShowRefer] = useState(false);
   const [showHelp, setShowHelp] = useState(true);
   const [showSwap, setShowSwap] = useState(false);
+  const [showWallet, setShowWallet] = useState(false);
   const [playkey] = useSound("/sounds/key.mp3");
   const [playenter] = useSound("/sounds/enter.mp3");
   const [playback] = useSound("/sounds/back.mp3");
@@ -43,6 +43,8 @@ export default function GamePage() {
   const [referCode, setReferCode] = useState("");
   const [referred, setReferred] = useState(false);
   const [gameplays, setGamePlays] = useState(1);
+  const [stellarWallet, setStellarWallet] = useState();
+  const [stellarSecret, setStellarSecret] = useState();
   const router = useRouter();
 
   useEffect(() => {
@@ -54,19 +56,33 @@ export default function GamePage() {
     }
   }, []);
   useEffect(() => {
-    console.log("shshhss", address, typeof address);
+    const address = localStorage.getItem("userId");
+    const secret = localStorage.getItem("userSecret");
     if (address) {
-      localStorage.setItem("userId", address);
-      authenticateWithWeb3(address);
       setUserAddress(address);
-      getData();
-      resetBoard();
     } else {
-      localStorage.removeItem("userId");
-      getData();
       setUserAddress(null);
     }
-  }, [address]);
+    if (secret) {
+      setStellarSecret(address);
+    } else {
+      setStellarSecret(null);
+    }
+  }, []);
+  useEffect(() => {
+    const address = localStorage.getItem("userId");
+    if (address) {
+      const getDataU = async()=>{
+      await authenticateWithWeb3(address);
+      await getData();
+      resetBoard();
+      }
+      getDataU();
+    } else {
+      getData();
+      resetBoard();
+    }
+  }, [userAddress]);
   useEffect(() => {
     if (refresh) {
       const timer = setTimeout(() => {
@@ -224,7 +240,7 @@ export default function GamePage() {
   const getData = async () => {
     const randomCryptoWord = await getAllCharacters();
     if (randomCryptoWord.completed) {
-      toast.success(`All words solved, now 3laxxx!`, {
+      toast.success(`All words solved, come back later to keep puzzling!`, {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -280,10 +296,10 @@ export default function GamePage() {
   };
 
   const handleKeyPress = async (key) => {
-        if (points === 1 && !userAddress) {
-          toast.error("Please login to keep playing!");
-          return;
-        }
+    if (points === 1 && !userAddress) {
+      toast.error("Please login to keep playing!");
+      return;
+    }
     if (gameplays === 0) {
       toast.error(
         "Convert your points to gameplays above or come back tomorrow!"
@@ -325,7 +341,12 @@ export default function GamePage() {
 
   return (
     <div
-      style={{ filter: showRefer || showHelp ? "blur(10px)" : "none" }}
+      style={{
+        filter:
+          showRefer || showHelp || showWallet || showSwap
+            ? "blur(50px)"
+            : "none",
+      }}
       className="gamecontainer"
     >
       <ReferModal
@@ -348,6 +369,14 @@ export default function GamePage() {
         setGamePlays={setGamePlays}
         showSwap={showSwap}
         setShowSwap={setShowSwap}
+      />
+      <GenerateWallet
+        userAddress={userAddress}
+        setUserAddress={setUserAddress}
+        showWallet={showWallet}
+        setShowWallet={setShowWallet}
+        stellarSecret={stellarSecret}
+        setStellarSecret={setStellarSecret}
       />
       <div className="top">
         <div
@@ -383,20 +412,14 @@ export default function GamePage() {
             src={refericon}
             alt="refer"
           />
-          <ConnectWallet
-            hideTestnetFaucet={false}
-            btnTitle="LOG IN"
-            theme={"dark"}
-            className="walletbtn"
-            modalSize={"compact"}
-            detailsBtn={() => {
-              return (
-                <button className="connectedbtn">
-                  {address?.substring(0, 4)}...{address?.slice(-3)}
-                </button>
-              );
+          <button
+            onClick={() => {
+              setShowWallet(true);
             }}
-          />
+            className="connectedbtn"
+          >
+            {userAddress? `${userAddress?.substring(0, 4)}...${userAddress?.slice(-3)}` : "Login"}
+          </button>
         </div>
       </div>
       <div className="title">
@@ -442,7 +465,7 @@ export default function GamePage() {
         />
         {refreshTimer !== 0 && (
           <div className="refresh">
-            {refreshTimer} seconds to take a screenshot
+          Next puzzle in {refreshTimer} seconds
           </div>
         )}
       </div>

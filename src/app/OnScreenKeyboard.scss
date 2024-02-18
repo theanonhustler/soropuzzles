@@ -1,7 +1,7 @@
 .keyboard-rows {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 15px;
   align-items: center;
   margin-bottom: 10px;
 }
@@ -9,7 +9,7 @@
   width: auto;
   display: flex;
   flex-direction: row;
-  gap: 10px;
+  gap: 15px;
 }
 
 .key_btn {
@@ -25,7 +25,7 @@
   border: none;
   text-transform: uppercase;
   color: #000;
-  border-radius: 50%;
+  border-radius: 5px;
   transition: all 0.15s linear 0s;
   box-shadow: -6px 6px 0 #eee;
 
@@ -75,10 +75,10 @@ button:active.key_btn {
   }
 }
 .key-special {
-  background-color: #fade42;
-  color: #000;
+  background-color: #000000;
+  color: #b5b5b5;
   width: 100px;
-  border-radius: 50px;
+  border-radius: 8px;
 }
 .key-correct {
   background: #42d941 !important;
@@ -110,10 +110,10 @@ button:active.key_btn {
     gap: 5px;
   }
   .key-special {
-    background-color: #fade42 !important;
-    color: #000;
+    background-color: #000000 !important;
+    color: #b5b5b5 !important;
     width: 60px !important;
-    border-radius: 50px !important;
+    border-radius: 8px !important;
   }
   .key-enter {
     font-size: 0.9em !important;
