@@ -4,7 +4,7 @@ import "./globals.scss";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "soropuzzles",
+  title: "Soropuzzles",
   description: "Fun word based puzzles on Stellar",
 };
 
